@@ -29,3 +29,24 @@ In this project, you can build your own C++ application or extend this Snake gam
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./SnakeGame`.
+
+## Project Description
+
+Additional features added to the Snake-game:
+
+* Add the capability to import arbitrary game layouts
+
+* Add blocked cells
+
+* Add a new feed object that will reverse direction of the snake (may not be critical)
+
+* Add a new feed object that will reduce the size of the snake
+
+* Add multiple players
+  * Human player
+  * Computer player
+    * Computer player could use A* algorithm to get from current location to future location
+
+## File and Class Structure
+
+## Addressing Rubric Points

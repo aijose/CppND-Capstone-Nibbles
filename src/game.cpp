@@ -1,13 +1,66 @@
 #include "game.h"
 #include <iostream>
+#include <vector>
+#include <string>
 #include "SDL.h"
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width)),
-      random_h(0, static_cast<int>(grid_height)) {
+      random_h(0, static_cast<int>(grid_height)),
+      domain_matrix{std::vector<std::vector<int>>(grid_height, std::vector<int>(0, grid_width))} {
+  PlaceSnake();
   PlaceFood();
+  InitializeBlockedCells();
+}
+
+Game::Game(std::vector<std::vector<int>> matrix)
+    : snake(matrix[0].size(), matrix.size()),
+      engine(dev()),
+      random_w(0, static_cast<int>(matrix[0].size())),
+      random_h(0, static_cast<int>(matrix.size())),
+      domain_matrix(matrix) {
+  InitializeBlockedCells();
+  PlaceSnake();
+  PlaceFood();
+}
+
+Game::Game(const Game& g)
+    : snake{g.snake}, 
+      food{g.food}, 
+      domain_matrix{g.domain_matrix}, 
+      engine(dev()), 
+      random_w(0, static_cast<int>(g.domain_matrix[0].size())), 
+      random_h(0, static_cast<int>(g.domain_matrix.size()))
+{
+}
+
+Game& Game::operator=(const Game& g)
+{
+  food = g.food;
+  domain_matrix = g.domain_matrix;
+  blocked_cells = g.blocked_cells;
+  engine = g.engine;
+  random_w = g.random_w;
+  random_h = g.random_h;
+
+  return *this;
+}
+
+//Game& Game::operator=(const Game& g): snake{g.snake}, food{g.food}, domain_matrix{g.domain_matrix}, dev{g.dev}, engine{g.engine}, random_w{g.random_w}, random_h{g.random_h} {
+//}
+
+void Game::InitializeBlockedCells(void) {
+  for (int i=0; i < domain_matrix.size(); i++)
+      for (int j=0; j < domain_matrix[0].size(); j++) {
+          if (domain_matrix[i][j] != 1) continue;
+          SDL_Point bc;
+          bc.x = j;
+          bc.y = i;
+          blocked_cells.push_back(bc);
+      }
+
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -25,7 +78,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food);
+    renderer.Render(snake, blocked_cells, food);
 
     frame_end = SDL_GetTicks();
 
@@ -50,6 +103,30 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   }
 }
 
+void Game::PlaceSnake() {
+  int x, y;
+  while (true) {
+    x = random_w(engine);
+    y = random_h(engine);
+    // Check that the location is not occupied by a snake item before placing
+    // food.
+    if (!BlockedCell(x, y)) {
+      food.x = x;
+      food.y = y;
+      return;
+    }
+  }
+}
+
+bool Game::BlockedCell(int x, int y) {
+  for (auto const &item : blocked_cells) {
+    if (x == item.x && y == item.y) {
+      return true;
+    }
+  }
+  return false;
+}
+
 void Game::PlaceFood() {
   int x, y;
   while (true) {
@@ -69,6 +146,13 @@ void Game::Update() {
   if (!snake.alive) return;
 
   snake.Update();
+  // Check if the snake has collided with a blocked cell
+  for (auto const &item : blocked_cells) {
+    if (abs(snake.head_x - item.x) < 0.5 && abs(snake.head_y - item.y) < 0.5) {
+      snake.alive = false;
+      break;
+    }
+  }
 
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
