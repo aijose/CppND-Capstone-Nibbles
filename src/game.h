@@ -13,7 +13,9 @@ class Game {
   Game(std::size_t grid_width, std::size_t grid_height);
   Game(std::vector<std::vector<int>>&& domain_matrix);
   Game(const Game& g);
+  Game(Game&& g);
   Game& operator=(const Game& g);
+  Game& operator=(Game&& g);
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
   int GetScore() const;

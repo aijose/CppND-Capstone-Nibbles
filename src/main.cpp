@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
   Controller controller;
   Game game(grid_width, grid_height);
 
-  if (domain_file != "") game = Game(std::move(domain_matrix));
+  if (domain_file != "") game = std::move(Game(std::move(domain_matrix)));
 
   game.Run(controller, renderer, kMsPerFrame);
   std::cout << "Game has terminated successfully!\n";

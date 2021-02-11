@@ -36,11 +36,33 @@ Game::Game(const Game& g)
 {
 }
 
+Game::Game(Game&& g)
+    : snake{g.snake}, 
+      food{g.food}, 
+      domain_matrix{std::move(g.domain_matrix)}, 
+      engine(dev()), 
+      random_w(0, static_cast<int>(g.domain_matrix[0].size())), 
+      random_h(0, static_cast<int>(g.domain_matrix.size()))
+{
+}
+
 Game& Game::operator=(const Game& g)
 {
   food = g.food;
   domain_matrix = g.domain_matrix;
   blocked_cells = g.blocked_cells;
+  engine = g.engine;
+  random_w = g.random_w;
+  random_h = g.random_h;
+
+  return *this;
+}
+
+Game& Game::operator=(Game&& g)
+{
+  food = g.food;
+  domain_matrix = std::move(g.domain_matrix);
+  blocked_cells = std::move(g.blocked_cells);
   engine = g.engine;
   random_w = g.random_w;
   random_h = g.random_h;
