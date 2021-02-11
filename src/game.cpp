@@ -4,30 +4,36 @@
 #include <string>
 #include "SDL.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height)
-    : snake(grid_width, grid_height),
+Game::Game(std::size_t grid_width, std::size_t grid_height, int nsnakes, std::map<std::string,std::string> key_maps)
+    : snakes{2, Snake(grid_width, grid_height)},
       engine(dev()),
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)),
       domain_matrix{grid_height, std::vector<int>(0, grid_width)} {
+  for(int i=0; i < nsnakes; i++) {
+      snake[i].key_map = key_maps[i];
+  }
   InitializeBlockedCells();
-  PlaceSnake();
+  PlaceSnakes();
   PlaceFood();
 }
 
-Game::Game(std::vector<std::vector<int>>&& matrix)
-    : snake(matrix[0].size(), matrix.size()),
+Game::Game(std::vector<std::vector<int>>&& matrix, int nsnakes, std::map<std::string,std::string> key_maps)
+    : snakes{2, Snake(matrix[0].size(), matrix.size())},
       engine(dev()),
       random_w(0, static_cast<int>(matrix[0].size())),
       random_h(0, static_cast<int>(matrix.size())),
       domain_matrix{matrix} {
+  for(int i=0; i < nsnakes; i++) {
+      snake[i].key_map = key_maps[i];
+  }
   InitializeBlockedCells();
   PlaceSnake();
   PlaceFood();
 }
 
 Game::Game(const Game& g)
-    : snake{g.snake}, 
+    : snakes{g.snakes}, 
       food{g.food}, 
       domain_matrix{g.domain_matrix}, 
       engine(dev()), 
@@ -37,7 +43,7 @@ Game::Game(const Game& g)
 }
 
 Game::Game(Game&& g)
-    : snake{g.snake}, 
+    : snakes{g.snakes}, 
       food{g.food}, 
       domain_matrix{std::move(g.domain_matrix)}, 
       engine(dev()), 
@@ -95,9 +101,9 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, snake);
+    controller.HandleInput(running, snakes);
     Update();
-    renderer.Render(snake, blocked_cells, food);
+    renderer.Render(snakes, blocked_cells, food);
 
     frame_end = SDL_GetTicks();
 
@@ -122,19 +128,22 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   }
 }
 
-void Game::PlaceSnake() {
-  int x, y;
-  while (true) {
-    x = random_w(engine);
-    y = random_h(engine);
-    // Check that the location is not occupied by a snake item before placing
-    // food.
-    if (!BlockedCell(x, y)) {
-      snake.head_x = x;
-      snake.head_y = y;
-      return;
+void Game::PlaceSnakes() {
+    for(auto& snake: snakes) {
+        int x, y;
+        bool exit_flag = true;
+        while (exit_flag) {
+            x = random_w(engine);
+            y = random_h(engine);
+            // Check that the location is not occupied by a snake item before placing
+            // food.
+            if (!BlockedCell(x, y)) {
+                snake.head_x = x;
+                snake.head_y = y;
+                exit_flag = false;
+            }
+        }
     }
-  }
 }
 
 bool Game::BlockedCell(int x, int y) {
@@ -154,16 +163,20 @@ void Game::PlaceFood() {
 
     // Check that the location is not occupied by a snake item or a blocked
     // cell before placing food.
-    if (!snake.SnakeCell(x, y) && !BlockedCell(x, y)) {
-      food.x = x;
-      food.y = y;
-      return;
+    for(auto& snake: snakes) {
+        if (!snake.SnakeCell(x, y)) {
+            food.x = x;
+            food.y = y;
+            return;
+        }
     }
   }
 }
 
 void Game::Update() {
-  if (!snake.alive) return;
+    for(auto& snake: snakes) {
+        if (!snake.alive) return;
+    }
 
   snake.Update();
   // Check if the snake has collided with a blocked cell

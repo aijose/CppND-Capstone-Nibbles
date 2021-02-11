@@ -2,6 +2,8 @@
 #define SNAKE_H
 
 #include <vector>
+#include <map>
+#include <string>
 #include "SDL.h"
 
 class Snake {
@@ -35,6 +37,8 @@ class Snake {
   bool growing{false};
   int grid_width;
   int grid_height;
+  std::map<std::string, std::string> key_map;
+  int score;
 };
 
 #endif

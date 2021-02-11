@@ -10,8 +10,8 @@
 
 class Game {
  public:
-  Game(std::size_t grid_width, std::size_t grid_height);
-  Game(std::vector<std::vector<int>>&& domain_matrix);
+  Game(std::size_t grid_width, std::size_t grid_height, std::size_t snake_count);
+  Game(std::vector<std::vector<int>>&& domain_matrix, snake_count);
   Game(const Game& g);
   Game(Game&& g);
   Game& operator=(const Game& g);
@@ -22,7 +22,7 @@ class Game {
   int GetSize() const;
 
  private:
-  Snake snake;
+  std::vector<Snake> snakes;
   SDL_Point food;
   std::vector<std::vector<int>> domain_matrix;
   std::vector<SDL_Point> blocked_cells;
@@ -36,7 +36,7 @@ class Game {
 
   void InitializeBlockedCells(void);
   bool BlockedCell(int x, int y);
-  void PlaceSnake();
+  void PlaceSnakes();
   void PlaceFood();
   void Update();
 };

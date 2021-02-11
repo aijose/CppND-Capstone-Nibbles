@@ -35,11 +35,25 @@ int main(int argc, char** argv) {
       domain_matrix = std::move(std::vector<std::vector<int>>(grid_height, std::vector<int>(grid_width, 0)));
   }
 
+  int nsnakes;
+  //std::cout << "Enter the number of snakes: ";
+  //std::cin >> nsnakes;
+  //for(int i=0; i < nsnakes; i++) {
+  //    std::cout << "Enter the up, down, left, right keys for snake #" << i;
+  //    std::map<std::string, std::string> single_key_map;
+  //    std::cin >> single_key_map["up"] >>  single_key_map["down"] >>  single_key_map["left"] >>  single_key_map["right"];
+  //}
+  nsnakes = 2;
+  std::vector<std::vector<std::map<std::string,std::string>>> key_maps = {
+      {{"up","left_arrow"}, {"down","down_arrow"}, {"left", "left_arow"}, {"right", "right_arrow"}}
+      {{"up","w"}, {"down","s"}, {"left", "a"}, {"right", "d"}}
+  };
+
   Renderer renderer(kScreenWidth, kScreenHeight, grid_width, grid_height);
   Controller controller;
-  Game game(grid_width, grid_height);
+  Game game(grid_width, grid_height, nsnakes, key_maps);
 
-  if (domain_file != "") game = std::move(Game(std::move(domain_matrix)));
+  if (domain_file != "") game = std::move(Game(std::move(domain_matrix), nsnakes, key_maps));
 
   game.Run(controller, renderer, kMsPerFrame);
   std::cout << "Game has terminated successfully!\n";
