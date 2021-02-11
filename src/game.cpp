@@ -9,18 +9,18 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
       engine(dev()),
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)),
-      domain_matrix{std::vector<std::vector<int>>(grid_height, std::vector<int>(0, grid_width))} {
+      domain_matrix{grid_height, std::vector<int>(0, grid_width)} {
+  InitializeBlockedCells();
   PlaceSnake();
   PlaceFood();
-  InitializeBlockedCells();
 }
 
-Game::Game(std::vector<std::vector<int>> matrix)
+Game::Game(std::vector<std::vector<int>>&& matrix)
     : snake(matrix[0].size(), matrix.size()),
       engine(dev()),
       random_w(0, static_cast<int>(matrix[0].size())),
       random_h(0, static_cast<int>(matrix.size())),
-      domain_matrix(matrix) {
+      domain_matrix{matrix} {
   InitializeBlockedCells();
   PlaceSnake();
   PlaceFood();
@@ -47,9 +47,6 @@ Game& Game::operator=(const Game& g)
 
   return *this;
 }
-
-//Game& Game::operator=(const Game& g): snake{g.snake}, food{g.food}, domain_matrix{g.domain_matrix}, dev{g.dev}, engine{g.engine}, random_w{g.random_w}, random_h{g.random_h} {
-//}
 
 void Game::InitializeBlockedCells(void) {
   for (int i=0; i < domain_matrix.size(); i++)
@@ -111,8 +108,8 @@ void Game::PlaceSnake() {
     // Check that the location is not occupied by a snake item before placing
     // food.
     if (!BlockedCell(x, y)) {
-      food.x = x;
-      food.y = y;
+      snake.head_x = x;
+      snake.head_y = y;
       return;
     }
   }

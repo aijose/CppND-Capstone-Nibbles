@@ -11,7 +11,7 @@
 class Game {
  public:
   Game(std::size_t grid_width, std::size_t grid_height);
-  Game(std::vector<std::vector<int>> domain_matrix);
+  Game(std::vector<std::vector<int>>&& domain_matrix);
   Game(const Game& g);
   Game& operator=(const Game& g);
   void Run(Controller const &controller, Renderer &renderer,
