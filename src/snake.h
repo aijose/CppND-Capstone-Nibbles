@@ -29,6 +29,7 @@ class Snake {
   float head_x;
   float head_y;
   std::vector<SDL_Point> body;
+  std::map<std::string, std::string> key_map;
 
  private:
   void UpdateHead();
@@ -37,7 +38,6 @@ class Snake {
   bool growing{false};
   int grid_width;
   int grid_height;
-  std::map<std::string, std::string> key_map;
   int score;
 };
 

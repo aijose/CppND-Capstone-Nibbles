@@ -44,9 +44,9 @@ int main(int argc, char** argv) {
   //    std::cin >> single_key_map["up"] >>  single_key_map["down"] >>  single_key_map["left"] >>  single_key_map["right"];
   //}
   nsnakes = 2;
-  std::vector<std::vector<std::map<std::string,std::string>>> key_maps = {
-      {{"up","left_arrow"}, {"down","down_arrow"}, {"left", "left_arow"}, {"right", "right_arrow"}}
-      {{"up","w"}, {"down","s"}, {"left", "a"}, {"right", "d"}}
+  std::vector<std::map<std::string,std::string>> key_maps = {
+      {{"up", "left_arrow"}, {"down", "down_arrow"}, {"left", "left_arow"}, {"right", "right_arrow"}}, 
+      {{"up", "w"}, {"down", "s"}, {"left", "a"}, {"right", "d"}}
   };
 
   Renderer renderer(kScreenWidth, kScreenHeight, grid_width, grid_height);

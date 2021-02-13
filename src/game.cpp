@@ -4,31 +4,29 @@
 #include <string>
 #include "SDL.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height, int nsnakes, std::map<std::string,std::string> key_maps)
+Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes, std::vector<std::map<std::string,std::string>>& key_maps)
     : snakes{2, Snake(grid_width, grid_height)},
       engine(dev()),
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)),
       domain_matrix{grid_height, std::vector<int>(0, grid_width)} {
-  for(int i=0; i < nsnakes; i++) {
-      snake[i].key_map = key_maps[i];
-  }
+  for(int i=0; i < nsnakes; i++)
+      snakes[i].key_map = key_maps[i];
   InitializeBlockedCells();
   PlaceSnakes();
   PlaceFood();
 }
 
-Game::Game(std::vector<std::vector<int>>&& matrix, int nsnakes, std::map<std::string,std::string> key_maps)
+Game::Game(std::vector<std::vector<int>>&& matrix, std::size_t nsnakes, std::vector<std::map<std::string,std::string>>& key_maps)
     : snakes{2, Snake(matrix[0].size(), matrix.size())},
       engine(dev()),
       random_w(0, static_cast<int>(matrix[0].size())),
       random_h(0, static_cast<int>(matrix.size())),
       domain_matrix{matrix} {
-  for(int i=0; i < nsnakes; i++) {
-      snake[i].key_map = key_maps[i];
-  }
+  for(int i=0; i < nsnakes; i++)
+      snakes[i].key_map = key_maps[i];
   InitializeBlockedCells();
-  PlaceSnake();
+  PlaceSnakes();
   PlaceFood();
 }
 
@@ -174,31 +172,33 @@ void Game::PlaceFood() {
 }
 
 void Game::Update() {
-    for(auto& snake: snakes) {
-        if (!snake.alive) return;
-    }
+  for(auto& snake: snakes)
+      if (!snake.alive) return;
 
-  snake.Update();
-  // Check if the snake has collided with a blocked cell
-  for (auto const &item : blocked_cells) {
-    if (abs(snake.head_x - item.x) < 0.5 && abs(snake.head_y - item.y) < 0.5) {
-      snake.alive = false;
-      break;
-    }
-  }
+  for(auto& snake: snakes) {
+      snake.Update();
+      // Check if the snake has collided with a blocked cell
+      for (auto const &item : blocked_cells) {
+        if (abs(snake.head_x - item.x) < 0.5 && abs(snake.head_y - item.y) < 0.5) {
+          snake.alive = false;
+          break;
+        }
+      }
 
-  int new_x = static_cast<int>(snake.head_x);
-  int new_y = static_cast<int>(snake.head_y);
+      int new_x = static_cast<int>(snake.head_x);
+      int new_y = static_cast<int>(snake.head_y);
 
-  // Check if there's food over here
-  if (food.x == new_x && food.y == new_y) {
-    score++;
-    PlaceFood();
-    // Grow snake and increase speed.
-    snake.GrowBody();
-    snake.speed += 0.02;
+      // Check if there's food over here
+      if (food.x == new_x && food.y == new_y) {
+        score++;
+        PlaceFood();
+        // Grow snake and increase speed.
+        snake.GrowBody();
+        snake.speed += 0.02;
+      }
   }
 }
 
 int Game::GetScore() const { return score; }
-int Game::GetSize() const { return snake.size; }
+//int Game::GetSize() const { return snake.size; }
+int Game::GetSize() const { return 0; }
