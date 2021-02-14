@@ -197,6 +197,20 @@ void Game::Update() {
         snake.speed += 0.02;
       }
   }
+  // Check if the snakes have collided with each other
+  for(int i=0; i < snakes.size(); i++) {
+      // Check if the snake has collided with another snake
+      for(int j=0; j < snakes.size(); j++) {
+          if (i == j) continue;
+          for (auto const &item : snakes[j].body) {
+              if (abs(snakes[i].head_x - item.x) < 0.5 && abs(snakes[i].head_y - item.y) < 0.5) {
+                  snakes[i].alive = false;
+                  goto outside_loops;
+              }
+          }
+      }
+  }
+outside_loops: ;
 }
 
 int Game::GetScore() const { return score; }

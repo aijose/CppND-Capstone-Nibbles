@@ -38,7 +38,7 @@ class Snake {
   bool growing{false};
   int grid_width;
   int grid_height;
-  int score;
+  int score=0;
 };
 
 #endif
