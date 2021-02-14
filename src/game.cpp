@@ -5,7 +5,7 @@
 #include "SDL.h"
 
 Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes, std::vector<std::map<std::string,std::string>>& key_maps)
-    : snakes{2, Snake(grid_width, grid_height)},
+    : snakes{nsnakes, Snake(grid_width, grid_height)},
       engine(dev()),
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)),
@@ -18,7 +18,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes,
 }
 
 Game::Game(std::vector<std::vector<int>>&& matrix, std::size_t nsnakes, std::vector<std::map<std::string,std::string>>& key_maps)
-    : snakes{2, Snake(matrix[0].size(), matrix.size())},
+    : snakes{nsnakes, Snake(matrix[0].size(), matrix.size())},
       engine(dev()),
       random_w(0, static_cast<int>(matrix[0].size())),
       random_h(0, static_cast<int>(matrix.size())),

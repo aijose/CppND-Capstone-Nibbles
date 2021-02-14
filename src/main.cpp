@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
   //}
   nsnakes = 2;
   std::vector<std::map<std::string,std::string>> key_maps = {
-      {{"up", "left_arrow"}, {"down", "down_arrow"}, {"left", "left_arow"}, {"right", "right_arrow"}}, 
+      {{"up", "up"}, {"down", "down"}, {"left", "left"}, {"right", "right"}}, 
       {{"up", "w"}, {"down", "s"}, {"left", "a"}, {"right", "d"}}
   };
 
