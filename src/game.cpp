@@ -179,7 +179,7 @@ void Game::Update() {
       snake.Update();
       // Check if the snake has collided with a blocked cell
       for (auto const &item : blocked_cells) {
-        if (abs(snake.head_x - item.x) < 0.5 && abs(snake.head_y - item.y) < 0.5) {
+        if (static_cast<int>(snake.head_x) == item.x && static_cast<int>(snake.head_y) == item.y) {
           snake.alive = false;
           break;
         }
@@ -203,7 +203,7 @@ void Game::Update() {
       for(int j=0; j < snakes.size(); j++) {
           if (i == j) continue;
           for (auto const &item : snakes[j].body) {
-              if (abs(snakes[i].head_x - item.x) < 0.5 && abs(snakes[i].head_y - item.y) < 0.5) {
+              if (static_cast<int>(snakes[i].head_x) == item.x && static_cast<int>(snakes[i].head_y) == item.y) {
                   snakes[i].alive = false;
                   goto outside_loops;
               }
