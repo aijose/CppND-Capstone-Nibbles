@@ -8,14 +8,18 @@
 #include "renderer.h"
 #include "snake.h"
 
+enum class CellType{empty=0, blocked=1, snake=2, food=3};
+
 class Game {
  public:
+
   Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps);
-  Game(std::vector<std::vector<int>>&& domain_matrix, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps);
+  Game(std::vector<std::vector<CellType>>&& domain_matrix, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps);
   Game(const Game& g);
   Game(Game&& g);
   Game& operator=(const Game& g);
   Game& operator=(Game&& g);
+  void UpdateDomainMatrix(void);
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
   int GetScore() const;
@@ -24,7 +28,7 @@ class Game {
  private:
   std::vector<Snake> snakes;
   SDL_Point food;
-  std::vector<std::vector<int>> domain_matrix;
+  std::vector<std::vector<CellType>> domain_matrix;
   std::vector<SDL_Point> blocked_cells;
 
   std::random_device dev;

@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
   constexpr std::size_t kGridHeight{32};
 
   std::string domain_file = "";
-  std::vector<std::vector<int>> domain_matrix;
+  std::vector<std::vector<CellType>> domain_matrix;
   int grid_width = kGridWidth;
   int grid_height = kGridHeight;
   if (argc > 1) {
@@ -23,16 +23,19 @@ int main(int argc, char** argv) {
               domain_file = argv[i];
       std::ifstream is{domain_file};
       is >> grid_width >> grid_height;
-      domain_matrix = std::move(std::vector<std::vector<int>>(grid_height, std::vector<int>(grid_width, 0)));
+      domain_matrix = std::move(std::vector<std::vector<CellType>>(grid_height, std::vector<CellType>(grid_width, CellType::empty)));
       int count  = 0;
       for (int i=0; i < grid_height; i++)
           for (int j=0; j < grid_width; j++) {
-              is >> domain_matrix[i][j];
-              if (domain_matrix[i][j] == 1) count++;
+              int cell_type;
+              is >> cell_type;
+              if (cell_type == 1)
+                  domain_matrix[i][j] = CellType::blocked;
+              if (domain_matrix[i][j] == CellType::blocked) count++;
           }
   }
   else {
-      domain_matrix = std::move(std::vector<std::vector<int>>(grid_height, std::vector<int>(grid_width, 0)));
+      domain_matrix = std::move(std::vector<std::vector<CellType>>(grid_height, std::vector<CellType>(grid_width, CellType::empty)));
   }
 
   int nsnakes, nsnakes_human, nsnakes_computer;
@@ -44,7 +47,7 @@ int main(int argc, char** argv) {
   //    std::cin >> single_key_map["up"] >>  single_key_map["down"] >>  single_key_map["left"] >>  single_key_map["right"];
   //}
   nsnakes = 2;
-  nsnakes_human = 1;
+  nsnakes_human = 0;
   std::vector<std::map<std::string,std::string>> key_maps = {
       {{"up", "up"}, {"down", "down"}, {"left", "left"}, {"right", "right"}}, 
       {{"up", "w"}, {"down", "s"}, {"left", "a"}, {"right", "d"}}

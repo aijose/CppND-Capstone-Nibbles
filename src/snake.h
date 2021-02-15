@@ -6,6 +6,9 @@
 #include <string>
 #include "SDL.h"
 
+class Game;
+enum class CellType;
+
 class Snake {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
@@ -33,6 +36,9 @@ class Snake {
   std::vector<SDL_Point> body;
   std::map<std::string, std::string> key_map;
   Type type;
+  int id;
+  std::vector<std::vector<CellType>> *domain_ptr;
+  SDL_Point *goal_ptr; 
 
  protected:
   void UpdateHead();

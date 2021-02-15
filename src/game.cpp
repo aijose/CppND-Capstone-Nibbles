@@ -9,21 +9,26 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes,
       engine(dev()),
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)),
-      domain_matrix{grid_height, std::vector<int>(0, grid_width)} {
+      domain_matrix{grid_height, std::vector<CellType>(grid_width, CellType::empty)} {
   for(int i=0; i < nsnakes_human; i++) {
       snakes[i].key_map = key_maps[i];
       snakes[i].type = Snake::Type::human;
-  }
-  for(int i=nsnakes_human; i < nsnakes; i++) {
-      snakes[i].key_map = key_maps[i];
-      snakes[i].type = Snake::Type::machine;
+      snakes[i].id = i;
   }
   InitializeBlockedCells();
   PlaceSnakes();
   PlaceFood();
+  UpdateDomainMatrix();
+  for(int i=nsnakes_human; i < nsnakes; i++) {
+      //snakes[i].key_map = key_maps[i];
+      snakes[i].type = Snake::Type::machine;
+      snakes[i].id = i;
+      snakes[i].domain_ptr = &domain_matrix;
+      snakes[i].goal_ptr = &food;
+  }
 }
 
-Game::Game(std::vector<std::vector<int>>&& matrix, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps)
+Game::Game(std::vector<std::vector<CellType>>&& matrix, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps)
     : snakes{nsnakes, Snake(matrix[0].size(), matrix.size())},
       engine(dev()),
       random_w(0, static_cast<int>(matrix[0].size())),
@@ -32,14 +37,19 @@ Game::Game(std::vector<std::vector<int>>&& matrix, std::size_t nsnakes, std::siz
   for(int i=0; i < nsnakes_human; i++) {
       snakes[i].key_map = key_maps[i];
       snakes[i].type = Snake::Type::human;
-  }
-  for(int i=nsnakes_human; i < nsnakes; i++) {
-      snakes[i].key_map = key_maps[i];
-      snakes[i].type = Snake::Type::machine;
+      snakes[i].id = i;
   }
   InitializeBlockedCells();
   PlaceSnakes();
   PlaceFood();
+  UpdateDomainMatrix();
+  for(int i=nsnakes_human; i < nsnakes; i++) {
+      //snakes[i].key_map = key_maps[i];
+      snakes[i].type = Snake::Type::machine;
+      snakes[i].id = i;
+      snakes[i].domain_ptr = &domain_matrix;
+      snakes[i].goal_ptr = &food;
+  }
 }
 
 Game::Game(const Game& g)
@@ -89,7 +99,7 @@ Game& Game::operator=(Game&& g)
 void Game::InitializeBlockedCells(void) {
   for (int i=0; i < domain_matrix.size(); i++)
       for (int j=0; j < domain_matrix[0].size(); j++) {
-          if (domain_matrix[i][j] != 1) continue;
+          if (domain_matrix[i][j] != CellType::blocked) continue;
           SDL_Point bc;
           bc.x = j;
           bc.y = i;
@@ -170,20 +180,24 @@ void Game::PlaceFood() {
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
+    if(x == food.x && y == food.y) continue;
 
     // Check that the location is not occupied by a snake item or a blocked
     // cell before placing food.
-    for(auto& snake: snakes) {
-        if (!snake.SnakeCell(x, y)) {
-            food.x = x;
-            food.y = y;
-            return;
-        }
+    if(BlockedCell(x, y)) continue;
+    bool snake_flag = false;
+    for(auto& snake: snakes)
+        if (snake.SnakeCell(x, y)) snake_flag = true;
+    if (!snake_flag) {
+        food.x = x;
+        food.y = y;
+        return;
     }
   }
 }
 
 void Game::Update() {
+  UpdateDomainMatrix();
   for(auto& snake: snakes)
       if (!snake.alive) return;
 
@@ -223,6 +237,21 @@ void Game::Update() {
       }
   }
 outside_loops: ;
+  UpdateDomainMatrix();
+}
+
+void Game::UpdateDomainMatrix(void) {
+  for(int i = 0; i < domain_matrix.size(); i++)
+      for(int j = 0; j < domain_matrix[i].size(); j++)
+          domain_matrix[i][j] = CellType::empty;
+  for (auto const &item : blocked_cells)
+      domain_matrix[item.x][item.y] = CellType::blocked; 
+  for (auto const& snake: snakes) {
+      domain_matrix[static_cast<int>(snake.head_x)][static_cast<int>(snake.head_y)] = CellType::snake;
+      for (auto const &item : snake.body)
+          domain_matrix[item.x][item.y] = CellType::snake; 
+  }
+  domain_matrix[food.x][food.y] = CellType::food;
 }
 
 int Game::GetScore() const { return score; }

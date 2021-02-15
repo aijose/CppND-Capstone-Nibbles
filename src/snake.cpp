@@ -1,4 +1,5 @@
 #include "snake.h"
+#include "game.h"
 #include <cmath>
 #include <iostream>
 
@@ -22,7 +23,74 @@ void Snake::Update() {
 }
 
 void Snake::EstimateDirection(void) {
+    SDL_Point current_cell{static_cast<int>(head_x), static_cast<int>(head_y)};
 
+    long int best_score = -1000000;
+    Direction best_dir = direction;
+    for(auto dir: {Direction::kUp, Direction::kDown, Direction::kLeft, Direction::kRight}) {
+        if (dir == Direction::kUp) {// Down
+            int x = fmod(current_cell.x + grid_width, grid_width);
+            int y = fmod(current_cell.y - 1 + grid_height, grid_height);
+            long int score = 0;
+            if ((*domain_ptr)[x][y] == CellType::blocked)
+                score = -20*(grid_width + grid_height);
+            else if ((*domain_ptr)[x][y] == CellType::snake)
+                score = -10*(grid_width + grid_height);
+            else
+                score = -(abs(goal_ptr->x - x) + abs(goal_ptr->y - y));
+            if (score > best_score) {
+                best_score = score;
+                best_dir = dir;
+            }
+        }
+        else if (dir == Direction::kDown) {// Down
+            int x = fmod(current_cell.x + grid_width, grid_width);
+            int y = fmod(current_cell.y + 1 + grid_height, grid_height);
+            long int score = 0;
+            if ((*domain_ptr)[x][y] == CellType::blocked)
+                score = -20*(grid_width + grid_height);
+            else if ((*domain_ptr)[x][y] == CellType::snake)
+                score = -10*(grid_width + grid_height);
+            else
+                score = -(abs(goal_ptr->x - x) + abs(goal_ptr->y - y));
+            if (score > best_score) {
+                best_score = score;
+                best_dir = dir;
+            }
+        }
+        else if (dir == Direction::kLeft) {// Left
+            int x = fmod(current_cell.x - 1 + grid_width, grid_width);
+            int y = fmod(current_cell.y + grid_height, grid_height);
+            long int score = 0;
+            if ((*domain_ptr)[x][y] == CellType::blocked)
+                score = -20*(grid_width + grid_height);
+            else if ((*domain_ptr)[x][y] == CellType::snake)
+                score = -10*(grid_width + grid_height);
+            else
+                score = -(abs(goal_ptr->x - x) + abs(goal_ptr->y - y));
+            if (score > best_score) {
+                best_score = score;
+                best_dir = dir;
+            }
+        }
+        else if (dir == Direction::kRight) {// Right
+            int x = fmod(current_cell.x + 1 + grid_width, grid_width);
+            int y = fmod(current_cell.y + grid_height, grid_height);
+            long int score = 0;
+            if ((*domain_ptr)[x][y] == CellType::blocked)
+                score = -20*(grid_width + grid_height);
+            else if ((*domain_ptr)[x][y] == CellType::snake)
+                score = -10*(grid_width + grid_height);
+            else
+                score = -(abs(goal_ptr->x - x) + abs(goal_ptr->y - y));
+            if (score > best_score) {
+                best_score = score;
+                best_dir = dir;
+            }
+        }
+    }
+    if (best_dir == direction) return;
+    direction = best_dir;
 }
 
 void Snake::UpdateHead() {
