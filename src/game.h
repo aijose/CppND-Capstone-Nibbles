@@ -10,8 +10,8 @@
 
 class Game {
  public:
-  Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes, std::vector<std::map<std::string,std::string>>& key_maps);
-  Game(std::vector<std::vector<int>>&& domain_matrix, std::size_t nsnakes, std::vector<std::map<std::string,std::string>>& key_maps);
+  Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps);
+  Game(std::vector<std::vector<int>>&& domain_matrix, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps);
   Game(const Game& g);
   Game(Game&& g);
   Game& operator=(const Game& g);

@@ -3,6 +3,8 @@
 #include <iostream>
 
 void Snake::Update() {
+  if (type == Snake::Type::machine)
+      EstimateDirection();
   SDL_Point prev_cell{
       static_cast<int>(head_x),
       static_cast<int>(
@@ -17,6 +19,10 @@ void Snake::Update() {
   if (current_cell.x != prev_cell.x || current_cell.y != prev_cell.y) {
     UpdateBody(current_cell, prev_cell);
   }
+}
+
+void Snake::EstimateDirection(void) {
+
 }
 
 void Snake::UpdateHead() {

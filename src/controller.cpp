@@ -78,6 +78,7 @@ void Controller::HandleInput(bool &running, std::vector<Snake> &snakes) const {
       running = false;
     } else if (e.type == SDL_KEYDOWN) {
       for(auto& snake: snakes) {
+          if (snake.type == Snake::Type::machine) continue;
           if (static_cast<Uint8>(e.key.keysym.sym) == sdl_map[snake.key_map["up"]])
               ChangeDirection(snake, Snake::Direction::kUp, Snake::Direction::kDown);
           else if (static_cast<Uint8>(e.key.keysym.sym) == sdl_map[snake.key_map["down"]])

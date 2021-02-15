@@ -9,6 +9,7 @@
 class Snake {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
+  enum class Type { human, machine };
 
   Snake(int grid_width, int grid_height)
       : grid_width(grid_width),
@@ -20,6 +21,7 @@ class Snake {
 
   void GrowBody();
   bool SnakeCell(int x, int y);
+  void EstimateDirection();
 
   Direction direction = Direction::kUp;
 
@@ -30,8 +32,9 @@ class Snake {
   float head_y;
   std::vector<SDL_Point> body;
   std::map<std::string, std::string> key_map;
+  Type type;
 
- private:
+ protected:
   void UpdateHead();
   void UpdateBody(SDL_Point &current_cell, SDL_Point &prev_cell);
 
