@@ -25,6 +25,7 @@ class Snake {
   void GrowBody();
   bool SnakeCell(int x, int y);
   void EstimateDirection();
+  bool SnakeNeighbor(int x, int y);
 
   Direction direction = Direction::kUp;
 

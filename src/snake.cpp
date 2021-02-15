@@ -22,10 +22,25 @@ void Snake::Update() {
   }
 }
 
+bool Snake::SnakeNeighbor(int x, int y) {
+    return false;
+    int offset = 2;
+    for (int i=-offset; i < offset+1; i++)  
+        for (int j=-offset; j < offset+1; j++) {
+            if (i == 0 && j == 0) continue;
+            int xp = (x + i) % grid_width;
+            int yp = (y + j) % grid_height;
+            if ((*domain_ptr)[xp][yp] == CellType::snake) return true;
+        }
+
+    return false;
+}
+
 void Snake::EstimateDirection(void) {
     SDL_Point current_cell{static_cast<int>(head_x), static_cast<int>(head_y)};
 
     long int best_score = -1000000;
+    float penalty = 1;
     Direction best_dir = direction;
     for(auto dir: {Direction::kUp, Direction::kDown, Direction::kLeft, Direction::kRight}) {
         if (dir == Direction::kUp) {// Down
@@ -36,8 +51,10 @@ void Snake::EstimateDirection(void) {
                 score = -20*(grid_width + grid_height);
             else if ((*domain_ptr)[x][y] == CellType::snake)
                 score = -10*(grid_width + grid_height);
-            else
+            else {
                 score = -(abs(goal_ptr->x - x) + abs(goal_ptr->y - y));
+                if (SnakeNeighbor(x, y)) score -= static_cast<int>(penalty*(grid_width + grid_height));
+            }
             if (score > best_score) {
                 best_score = score;
                 best_dir = dir;
@@ -51,8 +68,10 @@ void Snake::EstimateDirection(void) {
                 score = -20*(grid_width + grid_height);
             else if ((*domain_ptr)[x][y] == CellType::snake)
                 score = -10*(grid_width + grid_height);
-            else
+            else {
                 score = -(abs(goal_ptr->x - x) + abs(goal_ptr->y - y));
+                if (SnakeNeighbor(x, y)) score -= static_cast<int>(penalty*(grid_width + grid_height));
+            }
             if (score > best_score) {
                 best_score = score;
                 best_dir = dir;
@@ -66,8 +85,10 @@ void Snake::EstimateDirection(void) {
                 score = -20*(grid_width + grid_height);
             else if ((*domain_ptr)[x][y] == CellType::snake)
                 score = -10*(grid_width + grid_height);
-            else
+            else {
                 score = -(abs(goal_ptr->x - x) + abs(goal_ptr->y - y));
+                if (SnakeNeighbor(x, y)) score -= static_cast<int>(penalty*(grid_width + grid_height));
+            }
             if (score > best_score) {
                 best_score = score;
                 best_dir = dir;
@@ -81,8 +102,10 @@ void Snake::EstimateDirection(void) {
                 score = -20*(grid_width + grid_height);
             else if ((*domain_ptr)[x][y] == CellType::snake)
                 score = -10*(grid_width + grid_height);
-            else
+            else {
                 score = -(abs(goal_ptr->x - x) + abs(goal_ptr->y - y));
+                if (SnakeNeighbor(x, y)) score -= static_cast<int>(penalty*(grid_width + grid_height));
+            }
             if (score > best_score) {
                 best_score = score;
                 best_dir = dir;
