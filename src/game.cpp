@@ -7,8 +7,8 @@
 Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps)
     : snakes{nsnakes, Snake(grid_width, grid_height)},
       engine(dev()),
-      random_w(0, static_cast<int>(grid_width)),
-      random_h(0, static_cast<int>(grid_height)),
+      random_w(0, static_cast<int>(grid_width)-1),
+      random_h(0, static_cast<int>(grid_height)-1),
       domain_matrix{grid_height, std::vector<CellType>(grid_width, CellType::empty)} {
   for(int i=0; i < nsnakes_human; i++) {
       snakes[i].key_map = key_maps[i];
@@ -31,8 +31,8 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes,
 Game::Game(std::vector<std::vector<CellType>>&& matrix, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps)
     : snakes{nsnakes, Snake(matrix[0].size(), matrix.size())},
       engine(dev()),
-      random_w(0, static_cast<int>(matrix[0].size())),
-      random_h(0, static_cast<int>(matrix.size())),
+      random_w(0, static_cast<int>(matrix[0].size())-1),
+      random_h(0, static_cast<int>(matrix.size())-1),
       domain_matrix{matrix} {
   for(int i=0; i < nsnakes_human; i++) {
       snakes[i].key_map = key_maps[i];
@@ -57,8 +57,8 @@ Game::Game(const Game& g)
       food{g.food}, 
       domain_matrix{g.domain_matrix}, 
       engine(dev()), 
-      random_w(0, static_cast<int>(g.domain_matrix[0].size())), 
-      random_h(0, static_cast<int>(g.domain_matrix.size()))
+      random_w(0, static_cast<int>(g.domain_matrix[0].size())-1), 
+      random_h(0, static_cast<int>(g.domain_matrix.size())-1)
 {
 }
 
@@ -238,6 +238,17 @@ void Game::Update() {
   }
 outside_loops: ;
   UpdateDomainMatrix();
+}
+
+void Game::CheckBounds(int x, int y, int type) {
+    if(x >= 0 && x < domain_matrix[0].size() && y >= 0 && y < domain_matrix.size()) {
+        return;
+    }
+    else {
+        std::cout << "Type = " << type << std::endl;
+        std::cout << std::endl << "x = " << x << ", y = " << y << std::endl;
+        std::cout << std::endl << "Xlimit = " << domain_matrix[0].size() << ", Ylimit = " << domain_matrix.size() << std::endl;
+    }
 }
 
 void Game::UpdateDomainMatrix(void) {

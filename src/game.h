@@ -20,6 +20,7 @@ class Game {
   Game& operator=(const Game& g);
   Game& operator=(Game&& g);
   void UpdateDomainMatrix(void);
+  void CheckBounds(int x, int y, int type);
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
   int GetScore() const;
