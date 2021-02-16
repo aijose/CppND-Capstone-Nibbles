@@ -13,8 +13,8 @@ enum class CellType{empty=0, blocked=1, snake=2, food=3};
 class Game {
  public:
 
-  Game(std::size_t grid_width, std::size_t grid_height, int nsnakes, int nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps);
-  Game(std::vector<std::vector<CellType>>&& domain_matrix, int nsnakes, int nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps);
+  Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps);
+  Game(std::vector<std::vector<CellType>>&& domain_matrix, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps);
   Game(const Game& g);
   Game(Game&& g);
   Game& operator=(const Game& g);

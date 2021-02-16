@@ -4,10 +4,10 @@
 #include <string>
 #include "SDL.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height, int nsnakes, int nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps)
+Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps)
     : snakes{nsnakes, Snake(grid_width, grid_height)},
       engine(dev()),
-      scores{nsnakes, 0},
+      scores{static_cast<int>(nsnakes), 0},
       random_w(0, static_cast<int>(grid_width)-1),
       random_h(0, static_cast<int>(grid_height)-1),
       domain_matrix{grid_height, std::vector<CellType>(grid_width, CellType::empty)} {
@@ -28,10 +28,10 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, int nsnakes, int nsn
   }
 }
 
-Game::Game(std::vector<std::vector<CellType>>&& matrix, int nsnakes, int nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps)
+Game::Game(std::vector<std::vector<CellType>>&& matrix, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps)
     : snakes{nsnakes, Snake(matrix[0].size(), matrix.size())},
       engine(dev()),
-      scores{nsnakes, 0},
+      scores{static_cast<int>(nsnakes), 0},
       random_w(0, static_cast<int>(matrix[0].size())-1),
       random_h(0, static_cast<int>(matrix.size())-1),
       domain_matrix{matrix} {
