@@ -28,25 +28,96 @@ In this project, you can build your own C++ application or extend this Snake gam
 1. Clone this repo.
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
-4. Run it: `./SnakeGame`.
+4. Run it: `./SnakeGame`. 
+5. Optionally, a layout file can be used to specify different layouts for the
+   game. Sample layouts can be found in the data/ folder. The layout file can
+   be specified by using the "-l" command line option, as shown below:
+
+   ./SnakeGame -l ../data/horizontal\_divider.txt
 
 ## Project Description
 
-Additional features added to the Snake-game:
+This project extends the baseline snake game that was provided. In the baseline
+snake game, the user controls a snake. The snake moves around the domain trying
+to eat food which pops up 
 
-* Add the capability to import arbitrary game layouts
+The following extensions have been made:
 
-* Add blocked cells
+* The baseline snake game has only one layout, where the entire domain is
+  empty. The extended snake game allows arbitrary layouts that can be specified
+  using a layout file. A layout file specifies blocked cells (walls) in the
+  game domain. Sample domains are provided in the data/ folder.
 
-* Add a new feed object that will reverse direction of the snake (may not be critical)
+* The baseline snake game involves only one player. The extended snake game
+  allows multiple players.
 
-* Add a new feed object that will reduce the size of the snake
-
-* Add multiple players
-  * Human player
-  * Computer player
-    * Computer player could use A* algorithm to get from current location to future location
+* The baseline snake game involves only human players. The extended snake game
+  allows both human and machine players. A maximum of four players (machine and
+  human) are allowed. The machine players are programmed to seek the food
+  automatically and have been found to be better than most human players.
 
 ## File and Class Structure
 
+The source code can be found in the ./src folder. The layout files can be found
+in the ./data folder.
+
+The key classes in the code are listed below:
+
+* Snake: This class data and methods that model the properties and behavior of
+  a single snake. The agent behind a snake can be a human or a computer.
+
+* Game: This class brings together all the elements of the game, such as the
+  snakes, layout, food, etc. There is only one instance of this class.
+
+* Controller: The controller handles input from the player(s) and controls the
+  snake(s) movement accordingly.
+
+* Renderer: This class is responsible for displaying the different components
+  of the game at each frame of the game. Besides the snakes, it is responsible
+  for displaying the walls (blocked cells), food and scores.
+
 ## Addressing Rubric Points
+
+### Addressing Rubric Points
+
+* A README with instructions is included with the project
+
+* The README indicates which project is chosen.
+
+* The README includes information about each rubric point addressed.
+
+### Compiling and Testing
+
+* The submission must compile and run.
+
+### Loops, Functions, I/O
+
+* The project demonstrates an understanding of C++ functions and control structures.
+
+* The project reads data from a file and process the data, or the program writes data to a file.
+
+* The project accepts user input and processes the input.
+
+### Object Oriented Programming
+
+* The project uses Object Oriented Programming techniques.
+
+* Classes use appropriate access specifiers for class members.
+
+* Class constructors utilize member initialization lists.
+
+* Classes abstract implementation details from their interfaces.
+
+* Classes encapsulate behavior.
+
+### Memory Management
+
+* The project makes use of references in function declarations.
+
+* The project uses destructors appropriately.
+
+* The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate.
+
+* The project follows the Rule of 5.
+
+* The project uses move semantics to move data, instead of copying it, where possible.
