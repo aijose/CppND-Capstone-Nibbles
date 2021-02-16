@@ -40,6 +40,7 @@ class Snake {
   int id;
   std::vector<std::vector<CellType>> *domain_ptr;
   SDL_Point *goal_ptr; 
+  int score=0;
 
  protected:
   void UpdateHead();
@@ -48,7 +49,6 @@ class Snake {
   bool growing{false};
   int grid_width;
   int grid_height;
-  int score=0;
 };
 
 #endif

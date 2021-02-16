@@ -46,8 +46,8 @@ int main(int argc, char** argv) {
   //    std::map<std::string, std::string> single_key_map;
   //    std::cin >> single_key_map["up"] >>  single_key_map["down"] >>  single_key_map["left"] >>  single_key_map["right"];
   //}
-  nsnakes = 2;
-  nsnakes_human = 0;
+  nsnakes = 3;
+  nsnakes_human = 1;
   std::vector<std::map<std::string,std::string>> key_maps = {
       {{"up", "up"}, {"down", "down"}, {"left", "left"}, {"right", "right"}}, 
       {{"up", "w"}, {"down", "s"}, {"left", "a"}, {"right", "d"}}
@@ -61,7 +61,11 @@ int main(int argc, char** argv) {
 
   game.Run(controller, renderer, kMsPerFrame);
   std::cout << "Game has terminated successfully!\n";
-  std::cout << "Score: " << game.GetScore() << "\n";
-  std::cout << "Size: " << game.GetSize() << "\n";
+  std::vector<int> scores = game.GetScores();
+  std::cout << std::endl << "FINAL SCORES:" << std::endl;
+  for(int i=0; i < scores.size(); i++) {
+      std::cout << "Player" << i+1 << " score: " << scores[i] << std::endl;
+  }
+  //std::cout << "Size: " << game.GetSize() << "\n";
   return 0;
 }

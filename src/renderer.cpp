@@ -42,6 +42,18 @@ void Renderer::Render(std::vector<Snake>& snakes, std::vector<SDL_Point>& blocke
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
+  std::vector<std::vector<Uint8>> body_color = {
+      {0xE0,0xE0,0xE0}, //white
+      {0xE5,0xFF,0xCC}, //green
+      {0xFF,0x99,0xFF}, //magenta
+      {0x99,0xCC,0xFF}  //blue
+  };
+  std::vector<std::vector<Uint8>> head_color = {
+      {0xFF,0xFF,0xFF}, //white
+      {0x00,0xFF,0x00}, //green
+      {0xFF,0x00,0xFF}, //magenta
+      {0x00,0x00,0xFF}  //blue
+  };
 
   // Clear screen
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
@@ -62,8 +74,10 @@ void Renderer::Render(std::vector<Snake>& snakes, std::vector<SDL_Point>& blocke
   }
 
   // Render snake's body
+  int count = -1;
   for(auto& snake: snakes) {
-      SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+      count++;
+      SDL_SetRenderDrawColor(sdl_renderer, body_color[count][0], body_color[count][1], body_color[count][2], 0xFF);
       for (SDL_Point const &point : snake.body) {
           block.x = point.x * block.w;
           block.y = point.y * block.h;
@@ -74,7 +88,7 @@ void Renderer::Render(std::vector<Snake>& snakes, std::vector<SDL_Point>& blocke
       block.x = static_cast<int>(snake.head_x) * block.w;
       block.y = static_cast<int>(snake.head_y) * block.h;
       if (snake.alive) {
-          SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x7A, 0xCC, 0xFF);
+          SDL_SetRenderDrawColor(sdl_renderer, head_color[count][0], head_color[count][1], head_color[count][2], 0xFF);
       } else {
           SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
       }
@@ -85,7 +99,11 @@ void Renderer::Render(std::vector<Snake>& snakes, std::vector<SDL_Point>& blocke
   SDL_RenderPresent(sdl_renderer);
 }
 
-void Renderer::UpdateWindowTitle(int score, int fps) {
-  std::string title{"Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
+void Renderer::UpdateWindowTitle(std::vector<int>&& scores, int fps) {
+  std::string all_scores;
+  for(int i=0; i < scores.size(); i++) {
+      all_scores += "Player" + std::to_string(i+1) + "=" + std::to_string(scores[i]) + ", ";
+  }
+  std::string title{all_scores + " FPS: " + std::to_string(fps)};
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }

@@ -12,7 +12,7 @@ class Renderer {
   ~Renderer();
 
   void Render(std::vector<Snake>& snake, std::vector<SDL_Point>& blocked_cells, SDL_Point const &food);
-  void UpdateWindowTitle(int score, int fps);
+  void UpdateWindowTitle(std::vector<int>&& score, int fps);
 
  private:
   SDL_Window *sdl_window;

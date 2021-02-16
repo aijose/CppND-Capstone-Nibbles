@@ -4,9 +4,10 @@
 #include <string>
 #include "SDL.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps)
+Game::Game(std::size_t grid_width, std::size_t grid_height, int nsnakes, int nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps)
     : snakes{nsnakes, Snake(grid_width, grid_height)},
       engine(dev()),
+      scores{nsnakes, 0},
       random_w(0, static_cast<int>(grid_width)-1),
       random_h(0, static_cast<int>(grid_height)-1),
       domain_matrix{grid_height, std::vector<CellType>(grid_width, CellType::empty)} {
@@ -20,7 +21,6 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes,
   PlaceFood();
   UpdateDomainMatrix();
   for(int i=nsnakes_human; i < nsnakes; i++) {
-      //snakes[i].key_map = key_maps[i];
       snakes[i].type = Snake::Type::machine;
       snakes[i].id = i;
       snakes[i].domain_ptr = &domain_matrix;
@@ -28,9 +28,10 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes,
   }
 }
 
-Game::Game(std::vector<std::vector<CellType>>&& matrix, std::size_t nsnakes, std::size_t nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps)
+Game::Game(std::vector<std::vector<CellType>>&& matrix, int nsnakes, int nsnakes_human, std::vector<std::map<std::string,std::string>>& key_maps)
     : snakes{nsnakes, Snake(matrix[0].size(), matrix.size())},
       engine(dev()),
+      scores{nsnakes, 0},
       random_w(0, static_cast<int>(matrix[0].size())-1),
       random_h(0, static_cast<int>(matrix.size())-1),
       domain_matrix{matrix} {
@@ -44,7 +45,6 @@ Game::Game(std::vector<std::vector<CellType>>&& matrix, std::size_t nsnakes, std
   PlaceFood();
   UpdateDomainMatrix();
   for(int i=nsnakes_human; i < nsnakes; i++) {
-      //snakes[i].key_map = key_maps[i];
       snakes[i].type = Snake::Type::machine;
       snakes[i].id = i;
       snakes[i].domain_ptr = &domain_matrix;
@@ -134,7 +134,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count);
+      renderer.UpdateWindowTitle(GetScores(), frame_count);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -216,7 +216,7 @@ void Game::Update() {
 
       // Check if there's food over here
       if (food.x == new_x && food.y == new_y) {
-        score++;
+        snake.score++;
         PlaceFood();
         // Grow snake and increase speed.
         snake.GrowBody();
@@ -265,6 +265,9 @@ void Game::UpdateDomainMatrix(void) {
   domain_matrix[food.x][food.y] = CellType::food;
 }
 
-int Game::GetScore() const { return score; }
-//int Game::GetSize() const { return snake.size; }
-int Game::GetSize() const { return 0; }
+std::vector<int> Game::GetScores() const { 
+    std::vector<int> scores(snakes.size(), 0);
+    for(int i=0; i < snakes.size(); i++)
+        scores[i] = snakes[i].score;
+    return scores; 
+}
