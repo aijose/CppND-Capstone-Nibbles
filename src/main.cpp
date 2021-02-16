@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
   int grid_height = kGridHeight;
   if (argc > 1) {
       for (int i = 1; i < argc; ++i)
-          if (std::string_view{argv[i]} == "-d" && ++i < argc)
+          if (std::string_view{argv[i]} == "-l" && ++i < argc)
               domain_file = argv[i];
       std::ifstream is{domain_file};
       is >> grid_width >> grid_height;
