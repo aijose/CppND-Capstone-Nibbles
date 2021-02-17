@@ -3,6 +3,93 @@
 #include <cmath>
 #include <iostream>
 
+Snake::Snake(const Snake &s): 
+    direction{s.direction}, 
+    speed{s.speed},
+    size{s.size},
+    alive{s.alive},
+    head_x{s.head_x},
+    head_y{s.head_y},
+    body{s.body},
+    key_map{s.key_map},
+    type{s.type},
+    id{s.id},
+    domain_ptr{s.domain_ptr},
+    goal_ptr{s.goal_ptr},
+    score{s.score},
+    grid_width{s.grid_width},
+    grid_height{s.grid_height},
+    growing{s.growing}
+{
+}
+
+Snake::Snake(Snake &&s): 
+    direction{s.direction}, 
+    speed{s.speed},
+    size{s.size},
+    alive{s.alive},
+    head_x{s.head_x},
+    head_y{s.head_y},
+    body{std::move(s.body)},
+    key_map{std::move(s.key_map)},
+    type{s.type},
+    id{s.id},
+    domain_ptr{s.domain_ptr},
+    goal_ptr{s.goal_ptr},
+    score{s.score},
+    grid_width{s.grid_width},
+    grid_height{s.grid_height},
+    growing{s.growing}
+{
+}
+
+Snake& Snake::operator=(const Snake &s)
+{
+    if (this == &s) return *this;
+    direction = s.direction; 
+    speed = s.speed;
+    size = s.size;
+    alive = s.alive;
+    head_x = s.head_x;
+    head_y = s.head_y;
+    body = s.body;
+    key_map = s.key_map;
+    type = s.type;
+    id = s.id;
+    domain_ptr = s.domain_ptr;
+    goal_ptr = s.goal_ptr;
+    score = s.score;
+    grid_width = s.grid_width;
+    grid_height = s.grid_height;
+    growing = s.growing;
+
+    return *this;
+}
+
+Snake& Snake::operator=(Snake &&s)
+{
+    direction = s.direction; 
+    speed = s.speed;
+    size = s.size;
+    alive = s.alive;
+    head_x = s.head_x;
+    head_y = s.head_y;
+    body = std::move(s.body);
+    key_map = std::move(s.key_map);
+    type = s.type;
+    id = s.id;
+    domain_ptr = s.domain_ptr;
+    goal_ptr = s.goal_ptr;
+    score = s.score;
+    grid_width = s.grid_width;
+    grid_height = s.grid_height;
+    growing = s.growing;
+
+    return *this;
+}
+
+Snake::~Snake() {}
+
 void Snake::Update() {
   if (type == Snake::Type::machine)
       EstimateDirection();

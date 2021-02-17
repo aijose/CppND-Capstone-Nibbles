@@ -63,7 +63,7 @@ Game::Game(const Game& g)
 }
 
 Game::Game(Game&& g)
-    : snakes{g.snakes}, 
+    : snakes{std::move(g.snakes)}, 
       food{g.food}, 
       domain_matrix{std::move(g.domain_matrix)}, 
       engine(dev()), 
@@ -74,6 +74,7 @@ Game::Game(Game&& g)
 
 Game& Game::operator=(const Game& g)
 {
+  snakes = g.snakes;
   food = g.food;
   domain_matrix = g.domain_matrix;
   blocked_cells = g.blocked_cells;
@@ -86,6 +87,7 @@ Game& Game::operator=(const Game& g)
 
 Game& Game::operator=(Game&& g)
 {
+  snakes = std::move(g.snakes);
   food = g.food;
   domain_matrix = std::move(g.domain_matrix);
   blocked_cells = std::move(g.blocked_cells);
