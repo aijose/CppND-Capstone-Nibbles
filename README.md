@@ -93,28 +93,29 @@ The key classes in the code are listed below:
 ### Loops, Functions, I/O
 
 * The project demonstrates an understanding of C++ functions and control structures.
+  * Different C++ control structures such as if-else, for loops, switch, etc. are used
 
 * The project reads data from a file and process the data, or the program writes data to a file.
+  * The program reads a text file and uses it to define the layout for the game
 
 * The project accepts user input and processes the input.
+  * The program accepts the user inputs for controlling the snakes. The user inputs can be customized for multiple players.
 
 ### Object Oriented Programming
 
 * The project uses Object Oriented Programming techniques.
+  * The project uses multiple classses (*Controller*, *Game*, *Renderer*, *Snake*)
 
 * Classes use appropriate access specifiers for class members.
+  * Access specifiers have been used in all classes to control access to class members for all classes
 
 * Class constructors utilize member initialization lists.
-
-* Classes abstract implementation details from their interfaces.
-
-* Classes encapsulate behavior.
+  * Member initialization lists have been used in all the constructors of the *Game* class.
 
 ### Memory Management
 
 * The project makes use of references in function declarations.
-
-* The project uses destructors appropriately.
+  * References are used in the following functions - *Snake::UpdateBody, Renderer::Render, Game::Run, Controller::HandleInput, Controller::ChangeDirection*
 
 * The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate.
 
