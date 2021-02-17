@@ -205,6 +205,7 @@ void Game::Update() {
   for(auto& snake: snakes)
       if (!snake.alive) return;
 
+  bool food_consumed = false;
   for(auto& snake: snakes) {
       snake.Update();
       // Check if the snake has collided with a blocked cell
@@ -224,9 +225,13 @@ void Game::Update() {
         PlaceFood();
         // Grow snake and increase speed.
         snake.GrowBody();
-        snake.speed += 0.02;
+        food_consumed = true;
       }
   }
+  // If food was consumed, increase the speed for all snakes
+  if (food_consumed)
+      for(auto& snake: snakes)
+          snake.speed += 0.02;
   // Check if the snakes have collided with each other
   for(int i=0; i < snakes.size(); i++) {
       // Check if the snake has collided with another snake
