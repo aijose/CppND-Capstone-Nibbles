@@ -92,7 +92,7 @@ Snake::~Snake() {}
 
 void Snake::Update() {
   if (type == Snake::Type::machine)
-      EstimateDirection();
+      DecideDirection();
   SDL_Point prev_cell{
       static_cast<int>(head_x),
       static_cast<int>(
@@ -125,7 +125,7 @@ bool Snake::SnakeNeighbor(int x, int y, int distance) {
 
 // This function determines whether the snake needs to change direction
 // to reach its goal (food)
-void Snake::EstimateDirection(void) {
+void Snake::DecideDirection(void) {
     SDL_Point current_cell{static_cast<int>(head_x), static_cast<int>(head_y)};
 
     long int best_score = -1000000;
