@@ -14,14 +14,26 @@ int main(int argc, char** argv) {
   constexpr std::size_t kGridHeight{32};
 
   std::string domain_file = "";
+  std::string config_file = "";
   std::vector<std::vector<CellType>> domain_matrix;
   int grid_width = kGridWidth;
   int grid_height = kGridHeight;
+  bool layout_file_flag = false;
+  bool config_file_flag = false;
   if (argc > 1) {
       // Read the custom layout file
-      for (int i = 1; i < argc; ++i)
-          if (std::string_view{argv[i]} == "-l" && ++i < argc)
+      for (int i = 1; i < argc; ++i) {
+          if (std::string_view{argv[i]} == "-l" && ++i < argc) {
               domain_file = argv[i];
+              layout_file_flag = true;
+          }
+          if (std::string_view{argv[i]} == "-c" && ++i < argc) {
+              config_file = argv[i];
+              config_file_flag = true;
+          }
+      }
+  }
+  if (layout_file_flag) {
       std::ifstream is{domain_file};
       is >> grid_width >> grid_height;
       domain_matrix = std::move(std::vector<std::vector<CellType>>(grid_height, std::vector<CellType>(grid_width, CellType::empty)));
@@ -40,23 +52,36 @@ int main(int argc, char** argv) {
   }
 
   int nsnakes, nsnakes_human, nsnakes_computer;
+  std::vector<std::map<std::string,std::string>> key_maps;
+  std::map<std::string,std::string> single_key_map;
+
+  if (config_file_flag) {
+      std::ifstream is{config_file};
+      is >> nsnakes;
+      is >> nsnakes_human;
+      for(int i=0; i < nsnakes_human; i++) {
+          is >> single_key_map["up"] >>  single_key_map["down"] >>  single_key_map["left"] >>  single_key_map["right"];
+          key_maps.push_back(single_key_map);
+      }
+  } else { // Use default configuration of 3 computer players and 1 human player
+      nsnakes = 4;
+      nsnakes_human = 1;
+      key_maps = {
+          {{"up", "up"}, {"down", "down"}, {"left", "left"}, {"right", "right"}}, 
+          {{"up", "w"}, {"down", "s"}, {"left", "a"}, {"right", "d"}},
+          {{"up", "k"}, {"down", "j"}, {"left", "h"}, {"right", "l"}},
+          {{"up", "g"}, {"down", "b"}, {"left", "v"}, {"right", "n"}}
+      };
+  }
   //std::cout << "Enter the total number of snakes: ";
   //std::cin >> nsnakes;
   //std::cout << "Enter the number of human players: ";
   //std::cin >> nsnakes_human;
   //for(int i=0; i < nsnakes_human; i++) {
-  //    std::cout << "Enter the up, down, left, right keys for snake #" << i;
-  //    std::map<std::string, std::string> single_key_map;
+  //    std::cout << "Enter the up, down, left, right keys for Player#" << i+1 << ": ";
   //    std::cin >> single_key_map["up"] >>  single_key_map["down"] >>  single_key_map["left"] >>  single_key_map["right"];
+  //    key_maps.push_back(single_key_map);
   //}
-  nsnakes = 3;
-  nsnakes_human = 1;
-  std::vector<std::map<std::string,std::string>> key_maps = {
-      {{"up", "up"}, {"down", "down"}, {"left", "left"}, {"right", "right"}}, 
-      {{"up", "w"}, {"down", "s"}, {"left", "a"}, {"right", "d"}},
-      {{"up", "k"}, {"down", "j"}, {"left", "h"}, {"right", "l"}},
-      {{"up", "g"}, {"down", "b"}, {"left", "v"}, {"right", "n"}}
-  };
 
   if (nsnakes > 4) {
       std::cout << "The maximum number of snakes allowed is 4!" << std::endl;
@@ -75,7 +100,7 @@ int main(int argc, char** argv) {
   std::vector<int> scores = game.GetScores();
   std::cout << std::endl << "FINAL SCORES:" << std::endl;
   for(int i=0; i < scores.size(); i++) {
-      std::cout << "Player" << i+1 << " score: " << scores[i] << std::endl;
+      std::cout << "Player#" << i+1 << " score: " << scores[i] << std::endl;
   }
 
   return 0;
