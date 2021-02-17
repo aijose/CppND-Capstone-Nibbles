@@ -49,7 +49,7 @@ void Renderer::Render(std::vector<Snake>& snakes, std::vector<SDL_Point>& blocke
       {0x99,0xCC,0xFF}  //blue
   };
   std::vector<std::vector<Uint8>> head_color = {
-      {0xFF,0xFF,0xFF}, //light white
+      {0xF5,0xF5,0xF5}, //white smoke
       {0x00,0xFF,0x00}, //light green
       {0xFF,0x00,0xFF}, //light magenta
       {0x00,0x00,0xFF}  //light blue
@@ -67,7 +67,7 @@ void Renderer::Render(std::vector<Snake>& snakes, std::vector<SDL_Point>& blocke
 
   // Render blocked cells
   for(SDL_Point const &point : blocked_cells) {
-      SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xCC, 0xFF, 0xFF);
+      SDL_SetRenderDrawColor(sdl_renderer, 0xC0, 0xC0, 0xC0, 0xFF);
       block.x = point.x * block.w;
       block.y = point.y * block.h;
       SDL_RenderFillRect(sdl_renderer, &block);
