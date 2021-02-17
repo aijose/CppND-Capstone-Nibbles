@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
           for (int j=0; j < grid_width; j++) {
               int cell_type;
               is >> cell_type;
-              if (cell_type == 1)
+              if (cell_type != 0)
                   domain_matrix[i][j] = CellType::blocked;
               if (domain_matrix[i][j] == CellType::blocked) count++;
           }
@@ -39,9 +39,11 @@ int main(int argc, char** argv) {
   }
 
   int nsnakes, nsnakes_human, nsnakes_computer;
-  //std::cout << "Enter the number of snakes: ";
+  //std::cout << "Enter the total number of snakes: ";
   //std::cin >> nsnakes;
-  //for(int i=0; i < nsnakes; i++) {
+  //std::cout << "Enter the number of human players: ";
+  //std::cin >> nsnakes_human;
+  //for(int i=0; i < nsnakes_human; i++) {
   //    std::cout << "Enter the up, down, left, right keys for snake #" << i;
   //    std::map<std::string, std::string> single_key_map;
   //    std::cin >> single_key_map["up"] >>  single_key_map["down"] >>  single_key_map["left"] >>  single_key_map["right"];
@@ -50,8 +52,15 @@ int main(int argc, char** argv) {
   nsnakes_human = 1;
   std::vector<std::map<std::string,std::string>> key_maps = {
       {{"up", "up"}, {"down", "down"}, {"left", "left"}, {"right", "right"}}, 
-      {{"up", "w"}, {"down", "s"}, {"left", "a"}, {"right", "d"}}
+      {{"up", "w"}, {"down", "s"}, {"left", "a"}, {"right", "d"}},
+      {{"up", "k"}, {"down", "j"}, {"left", "h"}, {"right", "l"}},
+      {{"up", "g"}, {"down", "b"}, {"left", "v"}, {"right", "n"}}
   };
+
+  if (nsnakes > 4) {
+      std::cout << "The maximum number of snakes allowed is 4!" << std::endl;
+      return 0;
+  }
 
   Renderer renderer(kScreenWidth, kScreenHeight, grid_width, grid_height);
   Controller controller;
@@ -60,12 +69,13 @@ int main(int argc, char** argv) {
   if (domain_file != "") game = std::move(Game(std::move(domain_matrix), nsnakes, nsnakes_human, key_maps));
 
   game.Run(controller, renderer, kMsPerFrame);
+
   std::cout << "Game has terminated successfully!\n";
   std::vector<int> scores = game.GetScores();
   std::cout << std::endl << "FINAL SCORES:" << std::endl;
   for(int i=0; i < scores.size(); i++) {
       std::cout << "Player" << i+1 << " score: " << scores[i] << std::endl;
   }
-  //std::cout << "Size: " << game.GetSize() << "\n";
+
   return 0;
 }

@@ -42,7 +42,7 @@ class Snake {
   SDL_Point *goal_ptr; 
   int score=0;
 
- protected:
+ private:
   void UpdateHead();
   void UpdateBody(SDL_Point &current_cell, SDL_Point &prev_cell);
 

@@ -96,6 +96,8 @@ Game& Game::operator=(Game&& g)
   return *this;
 }
 
+Game::~Game() {}
+
 void Game::InitializeBlockedCells(void) {
   for (int i=0; i < domain_matrix.size(); i++)
       for (int j=0; j < domain_matrix[0].size(); j++) {

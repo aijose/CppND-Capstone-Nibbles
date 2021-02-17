@@ -19,6 +19,7 @@ class Game {
   Game(Game&& g);
   Game& operator=(const Game& g);
   Game& operator=(Game&& g);
+  ~Game();
   void UpdateDomainMatrix(void);
   void CheckBounds(int x, int y, int type);
   void Run(Controller const &controller, Renderer &renderer,
