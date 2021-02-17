@@ -11,6 +11,8 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes,
       random_w(0, static_cast<int>(grid_width)-1),
       random_h(0, static_cast<int>(grid_height)-1),
       domain_matrix{grid_height, std::vector<CellType>(grid_width, CellType::empty)} {
+
+  // Initialize the human snakes
   for(int i=0; i < nsnakes_human; i++) {
       snakes[i].key_map = key_maps[i];
       snakes[i].type = Snake::Type::human;
@@ -18,10 +20,13 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes,
       snakes[i].domain_ptr = &domain_matrix;
       snakes[i].goal_ptr = &food;
   }
+
   InitializeBlockedCells();
   PlaceSnakes();
   PlaceFood();
   UpdateDomainMatrix();
+
+  // Initialize the machine snakes
   for(int i=nsnakes_human; i < nsnakes; i++) {
       snakes[i].type = Snake::Type::machine;
       snakes[i].id = i;
@@ -37,6 +42,8 @@ Game::Game(std::vector<std::vector<CellType>>&& matrix, std::size_t nsnakes, std
       random_w(0, static_cast<int>(matrix[0].size())-1),
       random_h(0, static_cast<int>(matrix.size())-1),
       domain_matrix{matrix} {
+
+  // Initialize the human snakes
   for(int i=0; i < nsnakes_human; i++) {
       snakes[i].key_map = key_maps[i];
       snakes[i].type = Snake::Type::human;
@@ -44,10 +51,13 @@ Game::Game(std::vector<std::vector<CellType>>&& matrix, std::size_t nsnakes, std
       snakes[i].domain_ptr = &domain_matrix;
       snakes[i].goal_ptr = &food;
   }
+
   InitializeBlockedCells();
   PlaceSnakes();
   PlaceFood();
   UpdateDomainMatrix();
+
+  // Initialize the machine snakes
   for(int i=nsnakes_human; i < nsnakes; i++) {
       snakes[i].type = Snake::Type::machine;
       snakes[i].id = i;
@@ -66,6 +76,7 @@ Game::Game(const Game& g)
       random_h(0, static_cast<int>(g.domain_matrix.size())-1),
       scores{g.scores}
 {
+    // Update the pointer variables
     for(auto& snake: snakes) {
         snake.domain_ptr = &domain_matrix;
         snake.goal_ptr = &food;
@@ -82,6 +93,7 @@ Game::Game(Game&& g)
       random_h(0, static_cast<int>(g.domain_matrix.size())),
       scores{std::move(g.scores)}
 {
+    // Update the pointer variables
     for(auto& snake: snakes) {
         snake.domain_ptr = &domain_matrix;
         snake.goal_ptr = &food;
@@ -98,6 +110,8 @@ Game& Game::operator=(const Game& g)
   random_w = g.random_w;
   random_h = g.random_h;
   scores = g.scores;
+
+  // Update the pointer variables
   for(auto& snake: snakes) {
       snake.domain_ptr = &domain_matrix;
       snake.goal_ptr = &food;
@@ -116,6 +130,8 @@ Game& Game::operator=(Game&& g)
   random_w = g.random_w;
   random_h = g.random_h;
   scores = std::move(g.scores);
+
+  // Update the pointer variables
   for(auto& snake: snakes) {
       snake.domain_ptr = &domain_matrix;
       snake.goal_ptr = &food;
@@ -126,6 +142,7 @@ Game& Game::operator=(Game&& g)
 
 Game::~Game() {}
 
+// Maintain a list of blocked cells in the domain
 void Game::InitializeBlockedCells(void) {
   for (int i=0; i < domain_matrix.size(); i++)
       for (int j=0; j < domain_matrix[0].size(); j++) {
@@ -135,7 +152,6 @@ void Game::InitializeBlockedCells(void) {
           bc.y = i;
           blocked_cells.push_back(bc);
       }
-
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -196,6 +212,7 @@ void Game::PlaceSnakes() {
     }
 }
 
+// Check if the location is occupied by a blocked cell
 bool Game::BlockedCell(int x, int y) {
   for (auto const &item : blocked_cells) {
     if (x == item.x && y == item.y) {
@@ -210,6 +227,8 @@ void Game::PlaceFood() {
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
+
+    // Do not place the food at the same location
     if(x == food.x && y == food.y) continue;
 
     // Check that the location is not occupied by a snake item or a blocked
@@ -275,6 +294,7 @@ outside_loops: ;
   UpdateDomainMatrix();
 }
 
+// Update the domain matrix to contain the update locations of the snakes and food
 void Game::UpdateDomainMatrix(void) {
   for(int i = 0; i < domain_matrix.size(); i++)
       for(int j = 0; j < domain_matrix[i].size(); j++)
@@ -289,6 +309,7 @@ void Game::UpdateDomainMatrix(void) {
   domain_matrix[food.x][food.y] = CellType::food;
 }
 
+// Get scores for all players
 std::vector<int> Game::GetScores() const { 
     std::vector<int> scores(snakes.size(), 0);
     for(int i=0; i < snakes.size(); i++)

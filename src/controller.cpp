@@ -3,6 +3,7 @@
 #include "SDL.h"
 #include "snake.h"
 
+// Map keys to their SDL codes
 std::map<std::string,Uint8> sdl_map = {
     {"up", SDLK_UP},
     {"down", SDLK_DOWN},
@@ -77,6 +78,7 @@ void Controller::HandleInput(bool &running, std::vector<Snake> &snakes) const {
     if (e.type == SDL_QUIT) {
       running = false;
     } else if (e.type == SDL_KEYDOWN) {
+      // For all human snakes, check whether their control keys have been pressed
       for(auto& snake: snakes) {
           if (snake.type == Snake::Type::machine) continue;
           if (static_cast<Uint8>(e.key.keysym.sym) == sdl_map[snake.key_map["up"]])

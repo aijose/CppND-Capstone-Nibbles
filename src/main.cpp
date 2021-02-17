@@ -18,6 +18,7 @@ int main(int argc, char** argv) {
   int grid_width = kGridWidth;
   int grid_height = kGridHeight;
   if (argc > 1) {
+      // Read the custom layout file
       for (int i = 1; i < argc; ++i)
           if (std::string_view{argv[i]} == "-l" && ++i < argc)
               domain_file = argv[i];
