@@ -185,8 +185,8 @@ void Game::PlaceSnakes() {
         while (exit_flag) {
             x = random_w(engine);
             y = random_h(engine);
-            // Check that the location is not occupied by a snake item before placing
-            // food.
+            // Check that the location is not occupied by a blocked/wall cell before placing
+            // the snake.
             if (!BlockedCell(x, y)) {
                 snake.head_x = x;
                 snake.head_y = y;
