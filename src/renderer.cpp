@@ -114,7 +114,7 @@ void Renderer::Render(std::vector<Snake>& snakes, std::vector<SDL_Point>& blocke
 void Renderer::UpdateWindowTitle(std::vector<int>&& scores, int fps) {
   std::string all_scores;
   for(int i=0; i < scores.size(); i++) {
-      all_scores += "Player" + std::to_string(i+1) + "=" + std::to_string(scores[i]) + ", ";
+      all_scores += "Player#" + std::to_string(i+1) + "=" + std::to_string(scores[i]) + ", ";
   }
   std::string title{all_scores + " FPS: " + std::to_string(fps)};
   SDL_SetWindowTitle(sdl_window, title.c_str());

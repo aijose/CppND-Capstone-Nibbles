@@ -285,7 +285,7 @@ void Game::Update() {
           for (auto const &item : snakes[j].body) {
               if (static_cast<int>(snakes[i].head_x) == item.x && static_cast<int>(snakes[i].head_y) == item.y) {
                   snakes[i].alive = false;
-                  std::cout << std::endl << "Player " << i+1 << " has collided with Player " << j+1 <<"!" << std::endl;
+                  std::cout << std::endl << "Player#" << i+1 << " has collided with Player#" << j+1 <<"!" << std::endl;
                   goto outside_loops;
               }
           }

@@ -245,7 +245,7 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) 
   for (auto const &item : body) {
     if (current_head_cell.x == item.x && current_head_cell.y == item.y) {
       alive = false;
-      std::cout << std::endl << "Player " << id+1 << " has collided with himself!" << std::endl;
+      std::cout << std::endl << "Player#" << id+1 << " has collided with himself!" << std::endl;
     }
   }
 }
