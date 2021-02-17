@@ -63,62 +63,66 @@ in the ./data folder.
 
 The key classes in the code are listed below:
 
-* Snake: This class data and methods that model the properties and behavior of
+* **Snake:** This class data and methods that model the properties and behavior of
   a single snake. The agent behind a snake can be a human or a computer.
 
-* Game: This class brings together all the elements of the game, such as the
+* **Game:** This class brings together all the elements of the game, such as the
   snakes, layout, food, etc. There is only one instance of this class.
 
-* Controller: The controller handles input from the player(s) and controls the
+* **Controller:** The controller handles input from the player(s) and controls the
   snake(s) movement accordingly.
 
-* Renderer: This class is responsible for displaying the different components
+* **Renderer:** This class is responsible for displaying the different components
   of the game at each frame of the game. Besides the snakes, it is responsible
   for displaying the walls (blocked cells), food and scores.
 
 ## Addressing Rubric Points
 
-### Addressing Rubric Points
+### README
 
-* A README with instructions is included with the project
+* **A README with instructions is included with the project**
+  * README has been updated to include all the relevant details of the project
 
-* The README indicates which project is chosen.
+* **The README indicates which project is chosen.**
+  * The snake game that was provided has been extended to include many more features.
 
-* The README includes information about each rubric point addressed.
+* **The README includes information about each rubric point addressed.**
+  * The sections below describe how each rubric point has been addressed.
 
 ### Compiling and Testing
 
-* The submission must compile and run.
+* **The submission must compile and run.**
+  * The submission compiles and runs as expected. The instructions for compiling and running have been provided in an earlier section.
 
 ### Loops, Functions, I/O
 
-* The project demonstrates an understanding of C++ functions and control structures.
+* **The project demonstrates an understanding of C++ functions and control structures.**
   * Different C++ control structures such as if-else, for loops, switch, etc. are used
 
-* The project reads data from a file and process the data, or the program writes data to a file.
+* **The project reads data from a file and process the data, or the program writes data to a file.**
   * The program reads a text file and uses it to define the layout for the game
 
-* The project accepts user input and processes the input.
+* **The project accepts user input and processes the input.**
   * The program accepts the user inputs for controlling the snakes. The user inputs can be customized for multiple players.
 
 ### Object Oriented Programming
 
-* The project uses Object Oriented Programming techniques.
+* **The project uses Object Oriented Programming techniques.**
   * The project uses multiple classses (*Controller*, *Game*, *Renderer*, *Snake*)
 
-* Classes use appropriate access specifiers for class members.
+* **Classes use appropriate access specifiers for class members.**
   * Access specifiers have been used in all classes to control access to class members for all classes
 
-* Class constructors utilize member initialization lists.
+* **Class constructors utilize member initialization lists.**
   * Member initialization lists have been used in all the constructors of the *Game* class.
 
 ### Memory Management
 
-* The project makes use of references in function declarations.
+* **The project makes use of references in function declarations.**
   * References are used in the following functions - *Snake::UpdateBody, Renderer::Render, Game::Run, Controller::HandleInput, Controller::ChangeDirection*
 
-* The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate.
+* **The project follows the Rule of 5.**
+  * The rule of 5 is implemented for the *Game* and *Snake* classes
 
-* The project follows the Rule of 5.
-
-* The project uses move semantics to move data, instead of copying it, where possible.
+* **The project uses move semantics to move data, instead of copying it, where possible.**
+  * Move semantics is used where appropriate in the *Game* and *Snake* classes to move arrays instead of copying them.
