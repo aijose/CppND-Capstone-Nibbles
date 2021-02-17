@@ -15,6 +15,8 @@ Game::Game(std::size_t grid_width, std::size_t grid_height, std::size_t nsnakes,
       snakes[i].key_map = key_maps[i];
       snakes[i].type = Snake::Type::human;
       snakes[i].id = i;
+      snakes[i].domain_ptr = &domain_matrix;
+      snakes[i].goal_ptr = &food;
   }
   InitializeBlockedCells();
   PlaceSnakes();
@@ -39,6 +41,8 @@ Game::Game(std::vector<std::vector<CellType>>&& matrix, std::size_t nsnakes, std
       snakes[i].key_map = key_maps[i];
       snakes[i].type = Snake::Type::human;
       snakes[i].id = i;
+      snakes[i].domain_ptr = &domain_matrix;
+      snakes[i].goal_ptr = &food;
   }
   InitializeBlockedCells();
   PlaceSnakes();
@@ -62,6 +66,10 @@ Game::Game(const Game& g)
       random_h(0, static_cast<int>(g.domain_matrix.size())-1),
       scores{g.scores}
 {
+    for(auto& snake: snakes) {
+        snake.domain_ptr = &domain_matrix;
+        snake.goal_ptr = &food;
+    }
 }
 
 Game::Game(Game&& g)
@@ -74,6 +82,10 @@ Game::Game(Game&& g)
       random_h(0, static_cast<int>(g.domain_matrix.size())),
       scores{std::move(g.scores)}
 {
+    for(auto& snake: snakes) {
+        snake.domain_ptr = &domain_matrix;
+        snake.goal_ptr = &food;
+    }
 }
 
 Game& Game::operator=(const Game& g)
@@ -86,6 +98,10 @@ Game& Game::operator=(const Game& g)
   random_w = g.random_w;
   random_h = g.random_h;
   scores = g.scores;
+  for(auto& snake: snakes) {
+      snake.domain_ptr = &domain_matrix;
+      snake.goal_ptr = &food;
+  }
 
   return *this;
 }
@@ -100,6 +116,10 @@ Game& Game::operator=(Game&& g)
   random_w = g.random_w;
   random_h = g.random_h;
   scores = std::move(g.scores);
+  for(auto& snake: snakes) {
+      snake.domain_ptr = &domain_matrix;
+      snake.goal_ptr = &food;
+  }
 
   return *this;
 }
