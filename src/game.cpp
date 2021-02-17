@@ -257,6 +257,7 @@ void Game::Update() {
       for (auto const &item : blocked_cells) {
         if (static_cast<int>(snake.head_x) == item.x && static_cast<int>(snake.head_y) == item.y) {
           snake.alive = false;
+          std::cout << std::endl << "Player#" << snake.id+1 << " has collided with the wall!" << std::endl;
           break;
         }
       }
