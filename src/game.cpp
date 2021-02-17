@@ -56,19 +56,23 @@ Game::Game(const Game& g)
     : snakes{g.snakes}, 
       food{g.food}, 
       domain_matrix{g.domain_matrix}, 
+      blocked_cells{g.blocked_cells}, 
       engine(dev()), 
       random_w(0, static_cast<int>(g.domain_matrix[0].size())-1), 
-      random_h(0, static_cast<int>(g.domain_matrix.size())-1)
+      random_h(0, static_cast<int>(g.domain_matrix.size())-1),
+      scores{g.scores}
 {
 }
 
 Game::Game(Game&& g)
     : snakes{std::move(g.snakes)}, 
       food{g.food}, 
-      domain_matrix{std::move(g.domain_matrix)}, 
+      domain_matrix{g.domain_matrix}, 
+      blocked_cells{std::move(g.blocked_cells)}, 
       engine(dev()), 
       random_w(0, static_cast<int>(g.domain_matrix[0].size())), 
-      random_h(0, static_cast<int>(g.domain_matrix.size()))
+      random_h(0, static_cast<int>(g.domain_matrix.size())),
+      scores{std::move(g.scores)}
 {
 }
 
@@ -81,6 +85,7 @@ Game& Game::operator=(const Game& g)
   engine = g.engine;
   random_w = g.random_w;
   random_h = g.random_h;
+  scores = g.scores;
 
   return *this;
 }
@@ -94,6 +99,7 @@ Game& Game::operator=(Game&& g)
   engine = g.engine;
   random_w = g.random_w;
   random_h = g.random_h;
+  scores = std::move(g.scores);
 
   return *this;
 }
