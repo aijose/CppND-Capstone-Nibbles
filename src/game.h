@@ -21,7 +21,6 @@ class Game {
   Game& operator=(Game&& g);
   ~Game();
   void UpdateDomainMatrix(void);
-  void CheckBounds(int x, int y, int type);
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
   std::vector<int> GetScores() const;

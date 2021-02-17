@@ -249,17 +249,6 @@ outside_loops: ;
   UpdateDomainMatrix();
 }
 
-void Game::CheckBounds(int x, int y, int type) {
-    if(x >= 0 && x < domain_matrix[0].size() && y >= 0 && y < domain_matrix.size()) {
-        return;
-    }
-    else {
-        std::cout << "Type = " << type << std::endl;
-        std::cout << std::endl << "x = " << x << ", y = " << y << std::endl;
-        std::cout << std::endl << "Xlimit = " << domain_matrix[0].size() << ", Ylimit = " << domain_matrix.size() << std::endl;
-    }
-}
-
 void Game::UpdateDomainMatrix(void) {
   for(int i = 0; i < domain_matrix.size(); i++)
       for(int j = 0; j < domain_matrix[i].size(); j++)
