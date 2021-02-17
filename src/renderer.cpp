@@ -75,6 +75,7 @@ void Renderer::Render(std::vector<Snake>& snakes, std::vector<SDL_Point>& blocke
 
   // Render snake's body
   int count = -1;
+  bool dead_snake = false;
   for(auto& snake: snakes) {
       count++;
       SDL_SetRenderDrawColor(sdl_renderer, body_color[count][0], body_color[count][1], body_color[count][2], 0xFF);
@@ -90,10 +91,21 @@ void Renderer::Render(std::vector<Snake>& snakes, std::vector<SDL_Point>& blocke
       if (snake.alive) {
           SDL_SetRenderDrawColor(sdl_renderer, head_color[count][0], head_color[count][1], head_color[count][2], 0xFF);
       } else {
-          SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
+          dead_snake = true;
       }
       SDL_RenderFillRect(sdl_renderer, &block);
   }
+  // Color the dead snake's head red
+  if (dead_snake)
+      for(auto& snake: snakes) {
+          // Render snake's head
+          block.x = static_cast<int>(snake.head_x) * block.w;
+          block.y = static_cast<int>(snake.head_y) * block.h;
+          if (!snake.alive) {
+              SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
+              SDL_RenderFillRect(sdl_renderer, &block);
+          }
+      }
 
   // Update Screen
   SDL_RenderPresent(sdl_renderer);
