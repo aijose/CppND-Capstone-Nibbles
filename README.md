@@ -158,7 +158,7 @@ The key classes in the code are listed below:
 ### Object Oriented Programming
 
 * **The project uses Object Oriented Programming techniques.**
-  * The project uses multiple classses (*Controller*, *Game*, *Renderer*, *Snake*)
+  * The project uses multiple classes (*Controller*, *Game*, *Renderer*, *Snake*)
 
 * **Classes use appropriate access specifiers for class members.**
   * Access specifiers have been used in all classes to control access to class members for all classes
@@ -186,7 +186,7 @@ This project extends the baseline snake game by adding several new features. The
 * More layouts can be added.
 
 * The game can be played at successive levels with increasing difficulty, with
-  each level automatically loaded once the preceing level is completed.
+  each level automatically loaded once the preceding level is completed.
 
 * The machine's ability to navigate to the goal (food) is can be improved with
   a more powerful algorithm such as the A-star algorithm.
