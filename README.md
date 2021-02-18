@@ -1,7 +1,7 @@
-# CPPND: Capstone Snake Game Example
+# CPPND: Capstone - Extended Snake Game
 
 This is the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses. The starter code for this repo was provided [here](https://github.com/udacity/CppND-Capstone-Snake-Game.git).
-This project, extends the functionality of the basic snake game. Some of the newly added features are based on ideas from  [gnome-nibbles](https://wiki.gnome.org/Apps/Nibbles). A sample gif animation of the extended snake game is shown below:
+This project extends the functionality of the basic snake game. Some of the newly added features are based on ideas from  [gnome-nibbles](https://wiki.gnome.org/Apps/Nibbles). A sample gif animation of the extended snake game is shown below:
 
 <img src="snake_game.gif"/>
 
@@ -32,7 +32,7 @@ This project, extends the functionality of the basic snake game. Some of the new
   `./SnakeGame -l ../layouts/horizontal_divider.txt -c ../config.txt`
 
 
-   * Sample layouts can be found in the layouts/ folder.
+   * Sample layouts can be found in the `layouts/` folder.
      The layout file can be specified by using the `-l` command line option, as
      shown below:
 
@@ -53,17 +53,17 @@ This project, extends the functionality of the basic snake game. Some of the new
      configuration file are shown below:
 
       ```
-      4
-      4
+      2
+      1
       up down left right
       w s a f
       k j h l
       g b v n
       ```
 
-      The first line specifies the total number players (or snakes) in the game (4
+      The first line specifies the total number players (i.e., snakes) in the game (2
       for the a configuration shown above). The second line specifies the number
-      of human players in the game (4 for the configuration file shown above).
+      of human players in the game (1 for the configuration file shown above).
       Each line thereafter indicates the `up`, `down`, `left`, `right` keys for
       each human player. Not all keys are allowed but most printable keys are
       permitted. Since the up, down, left and right arrow keys are not printable
@@ -81,27 +81,29 @@ This project, extends the functionality of the basic snake game. Some of the new
 
 This project extends the baseline snake game that was provided. In the baseline
 snake game, the user controls a snake. The snake moves around the domain trying
-to eat food which is indicate by a yellow block. When a snake consumes the food,
+to eat food which is indicated by a yellow block. When a snake consumes the food,
 new food pops up at a random location in the grid. The length of the snake and its speed increases when it consumes food. The following extensions have been made:
 
-* The baseline snake game has only one layout, where the entire domain is
-  empty. The extended snake game allows arbitrary layouts that can be specified
-  using a layout file. A layout file specifies blocked cells (walls) in the
-  game domain. Sample domains are provided in the layouts/ folder.
+* The baseline snake game has only one layout, where the entire domain is empty.
+  There are no blocked cells. The extended snake game allows arbitrary layouts
+  that can be specified using a layout file. A layout file specifies blocked
+  cells (walls) in the game domain. Sample domains are provided in the layouts/
+  folder.
 
 * The baseline snake game involves only one player. The extended snake game
   allows multiple players.
 
 * The baseline snake game involves only human players. The extended snake game
-  allows both human and machine players. A maximum of four players (machine and
-  human) are allowed. The machine players are programmed to seek the food
-  automatically and have been found to be better than most human players.
+  allows both human and machine players. A maximum of only four total players
+  (machine and human) are allowed. The machine players are programmed to seek
+  the food automatically and have been found to be play reasonably well compared
+  to human players.
 
 ## File and Class Structure
 
 ### File Structure
 The source code can be found in the ./src folder. The layout files can be found
-in the ./layouts folder. The images can be found in the ./images folder.
+in the ./layouts folder. The images can be found in the ./images folder. The entire file structure is shown below:
 
 <img src="images/file_structure.png"/>
 
@@ -109,18 +111,18 @@ in the ./layouts folder. The images can be found in the ./images folder.
 
 The key classes in the code are listed below:
 
-* **Snake:** This class data and methods that model the properties and behavior of
-  a single snake. The agent behind a snake can be a human or a computer.
+* **Snake:** This data and methods in this class model the properties and behavior of
+  a single snake. The agent behind a snake can be a human or a computer/machine.
 
-* **Game:** This class brings together all the elements of the game, such as the
-  snakes, layout, food, etc. There is only one instance of this class.
-
-* **Controller:** The controller handles input from the player(s) and controls the
-  snake(s) movement accordingly.
+* **Controller:** The controller handles input from the human player(s) and directs the
+  snake(s) motion accordingly.
 
 * **Renderer:** This class is responsible for displaying the different components
-  of the game at each frame of the game. Besides the snakes, it is responsible
+  of the game at each time frame. Besides the snakes, it is responsible
   for displaying the walls (blocked cells), food and scores.
+
+* **Game:** This class brings together all the elements of the game, such as the
+  snakes, layout, food, etc.. It contains multiple snakes and invokes the controller and renderer. There is only one instance of the game class.
 
   The structure of each of the above classes and their relationships are shown below:
 
@@ -147,13 +149,13 @@ The key classes in the code are listed below:
 ### Loops, Functions, I/O
 
 * **The project demonstrates an understanding of C++ functions and control structures.**
-  * Different C++ control structures such as if-else, for loops, switch, etc. are used
+  * Different C++ control structures such as `if-else`, `for` loops, `switch`, etc. have been used in this project.
 
 * **The project reads data from a file and process the data, or the program writes data to a file.**
-  * The program reads a text file and uses it to define the layout for the game
+  * The program reads a text file and uses it to define the layout for the game.
 
 * **The project accepts user input and processes the input.**
-  * The program accepts the user inputs for controlling the snakes. The user inputs can be customized for multiple players.
+  * The program accepts the user inputs for controlling the snakes. The user inputs can be customized for multiple players using a configuration file.
 
 ### Object Oriented Programming
 
@@ -161,7 +163,7 @@ The key classes in the code are listed below:
   * The project uses multiple classes (*Controller*, *Game*, *Renderer*, *Snake*)
 
 * **Classes use appropriate access specifiers for class members.**
-  * Access specifiers have been used in all classes to control access to class members for all classes
+  * Access specifiers have been used in all classes to control access to class members. 
 
 * **Class constructors utilize member initialization lists.**
   * Member initialization lists have been used in all the constructors of the *Game* class.

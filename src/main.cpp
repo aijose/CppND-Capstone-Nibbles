@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
           key_maps.push_back(single_key_map);
       }
   } else { // Use default configuration of 3 computer players and 1 human player
-      nsnakes = 4;
+      nsnakes = 2;
       nsnakes_human = 1;
       key_maps = {
           {{"up", "up"}, {"down", "down"}, {"left", "left"}, {"right", "right"}}, 
