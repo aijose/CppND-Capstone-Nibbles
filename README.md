@@ -1,7 +1,7 @@
 # CPPND: Capstone Snake Game Example
 
 This is the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses. The starter code for this repo was provided [here](https://github.com/udacity/CppND-Capstone-Snake-Game.git).
-This project, extends the functionality of the basic snake game. A gif animation of the extended snake game is shown below:
+This project, extends the functionality of the basic snake game. Some of the newly added features are based on ideas from  [gnome-nibbles](https://wiki.gnome.org/Apps/Nibbles). A sample gif animation of the extended snake game is shown below:
 
 <img src="snake_game.gif"/>
 
@@ -27,16 +27,20 @@ This project, extends the functionality of the basic snake game. A gif animation
 3. Compile: `cmake .. && make`
 4. Run it: `./SnakeGame`
 5. Optionally, layout and config files can be used to specify different
-   layouts and game configurations using the -l and -c command line options respectively. Sample layouts can be found in the layouts/ folder.
+   layouts and game configurations using the `-l` and `-c` command line options respectively, as shown below:
 
-   * The layout file can be specified by using the `-l` command line option, as
+  `./SnakeGame -l ../layouts/horizontal_divider.txt -c ../config.txt`
+
+
+   * Sample layouts can be found in the layouts/ folder.
+     The layout file can be specified by using the `-l` command line option, as
      shown below:
 
      `./SnakeGame -l ../layouts/horizontal_divider.txt`
 
      The first line in the layout file has two entries corresponding to the
-     grid width and grigh height respectively. The remaining lines specify the
-     entries in a matrix of dimensions (grid\_width x grid\_height). The
+     `grid width`  and `grid_height` respectively. The remaining lines specify the
+     entries in a matrix of dimensions (`grid_width x grid_height`). The
      blocked/wall cells of the grid are indicated by non-zero values while
      the open cells are denoted by a value of 0.
 
@@ -57,21 +61,21 @@ This project, extends the functionality of the basic snake game. A gif animation
       g b v n
       ```
 
-    The first line specifies the total number players (or snakes) in the game (4
-    for the a configuration shown above). The second line specifies the number
-    of human players in the game (4 for the configuration file shown above).
-    Each line thereafter indicates the `up`, `down`, `left`, `right` keys for
-    each human player. Not all keys are allowed but most printable keys are
-    permitted. Since the up, down, left and right arrow keys are not printable
-    keys, they can be specified by using the strings "up", "down", "left",
-    "right" strings as shown in the sample configuration file above. If no
-    configuration file is specified, then the default values correspond to the configuration file shown below (i.e., 1 human and 1 machine player):
+      The first line specifies the total number players (or snakes) in the game (4
+      for the a configuration shown above). The second line specifies the number
+      of human players in the game (4 for the configuration file shown above).
+      Each line thereafter indicates the `up`, `down`, `left`, `right` keys for
+      each human player. Not all keys are allowed but most printable keys are
+      permitted. Since the up, down, left and right arrow keys are not printable
+      keys, they can be specified by using the strings "up", "down", "left",
+      "right" strings as shown in the sample configuration file above. If no
+      configuration file is specified, then the default values correspond to the configuration file shown below (i.e., 1 human and 1 machine player):
 
-      ```
-      2
-      1
-      up down left right
-      ```
+        ```
+        2
+        1
+        up down left right
+        ```
 
 ## Project Description
 
@@ -172,3 +176,17 @@ The key classes in the code are listed below:
 
 * **The project uses move semantics to move data, instead of copying it, where possible.**
   * Move semantics is used where appropriate in the *Game* and *Snake* classes to move arrays instead of copying them.
+
+## Future Work
+
+This project extends the baseline snake game by adding several new features. There is scope for improvement and some ideas for further extending this project are listed below:
+
+* The game configuration could be specified using the GUI interface instead of a configuration file.
+
+* More layouts can be added.
+
+* The game can be played at successive levels with increasing difficulty, with
+  each level automatically loaded once the preceing level is completed.
+
+* The machine's ability to navigate to the goal (food) is can be improved with
+  a more powerful algorithm such as the A-star algorithm.
