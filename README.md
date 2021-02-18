@@ -95,8 +95,13 @@ new food pops up at a random location in the grid. The length of the snake and i
 
 ## File and Class Structure
 
+### File Structure
 The source code can be found in the ./src folder. The layout files can be found
-in the ./layouts folder.
+in the ./layouts folder. The images can be found in the ./images folder.
+
+<img src="images/file_structure.png"/>
+
+### Class Structure
 
 The key classes in the code are listed below:
 
@@ -112,6 +117,10 @@ The key classes in the code are listed below:
 * **Renderer:** This class is responsible for displaying the different components
   of the game at each frame of the game. Besides the snakes, it is responsible
   for displaying the walls (blocked cells), food and scores.
+
+  The structure of each of the above classes and their relationships are shown below:
+
+<img src="images/class_diagram_snake_game.png"/>
 
 ## Addressing Rubric Points
 
