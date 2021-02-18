@@ -1,12 +1,9 @@
 # CPPND: Capstone Snake Game Example
 
-This is a starter repo for the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
+This is the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses. The starter code for this repo was provided [here](https://github.com/udacity/CppND-Capstone-Snake-Game.git).
+This project, extends the functionality of the basic snake game. A gif animation of the extended snake game is shown below:
 
 <img src="snake_game.gif"/>
-
-The Capstone Project gives you a chance to integrate what you've learned throughout this program. This project will become an important part of your portfolio to share with current and future colleagues and employers.
-
-In this project, you can build your own C++ application or extend this Snake game, following the principles you have learned throughout this Nanodegree Program. This project will demonstrate that you can independently create applications using a wide range of C++ features.
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
@@ -28,25 +25,65 @@ In this project, you can build your own C++ application or extend this Snake gam
 1. Clone this repo.
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
-4. Run it: `./SnakeGame`. 
-5. Optionally, a layout file can be used to specify different layouts for the
-   game. Sample layouts can be found in the data/ folder. The layout file can
-   be specified by using the "-l" command line option, as shown below:
+4. Run it: `./SnakeGame`
+5. Optionally, layout and config files can be used to specify different
+   layouts and game configurations using the -l and -c command line options respectively. Sample layouts can be found in the layouts/ folder.
 
-   ./SnakeGame -l ../data/horizontal\_divider.txt
+   * The layout file can be specified by using the `-l` command line option, as
+     shown below:
+
+     `./SnakeGame -l ../layouts/horizontal_divider.txt`
+
+     The first line in the layout file has two entries corresponding to the
+     grid width and grigh height respectively. The remaining lines specify the
+     entries in a matrix of dimensions (grid\_width x grid\_height). The
+     blocked/wall cells of the grid are indicated by non-zero values while
+     the open cells are denoted by a value of 0.
+
+   * The configuration file can be specified using the `-c` command line option, as shown below:
+
+     `./SnakeGame -c ../config.txt`
+
+     A sample configuration file is contained in the top level directory of the
+     repository and is named `config.txt`. The default contents of the
+     configuration file are shown below:
+
+      ```
+      4
+      4
+      up down left right
+      w s a f
+      k j h l
+      g b v n
+      ```
+
+    The first line specifies the total number players (or snakes) in the game (4
+    for the a configuration shown above). The second line specifies the number
+    of human players in the game (4 for the configuration file shown above).
+    Each line thereafter indicates the `up`, `down`, `left`, `right` keys for
+    each human player. Not all keys are allowed but most printable keys are
+    permitted. Since the up, down, left and right arrow keys are not printable
+    keys, they can be specified by using the strings "up", "down", "left",
+    "right" strings as shown in the sample configuration file above. If no
+    configuration file is specified, then the default values correspond to the configuration file shown below (i.e., 1 human and 1 machine player):
+
+      ```
+      2
+      1
+      up down left right
+      ```
 
 ## Project Description
 
 This project extends the baseline snake game that was provided. In the baseline
 snake game, the user controls a snake. The snake moves around the domain trying
-to eat food which pops up 
-
-The following extensions have been made:
+to eat food which is indicate by a yellow block. When a snake consumes the food,
+new food pops up at a random location in the grid. The length of the snake and its speed increases when it consumes food. The following extensions have been made:
 
 * The baseline snake game has only one layout, where the entire domain is
   empty. The extended snake game allows arbitrary layouts that can be specified
   using a layout file. A layout file specifies blocked cells (walls) in the
-  game domain. Sample domains are provided in the data/ folder.
+  game domain. Sample domains are provided in the layouts/ folder.
 
 * The baseline snake game involves only one player. The extended snake game
   allows multiple players.
@@ -59,7 +96,7 @@ The following extensions have been made:
 ## File and Class Structure
 
 The source code can be found in the ./src folder. The layout files can be found
-in the ./data folder.
+in the ./layouts folder.
 
 The key classes in the code are listed below:
 
@@ -119,10 +156,10 @@ The key classes in the code are listed below:
 ### Memory Management
 
 * **The project makes use of references in function declarations.**
-  * References are used in the following functions - *Snake::UpdateBody, Renderer::Render, Game::Run, Controller::HandleInput, Controller::ChangeDirection*
+  * References are used in the following functions - *Snake::UpdateBody, Renderer::Render, Game::Run, Controller::HandleInput, Controller::ChangeDirection*.
 
 * **The project follows the Rule of 5.**
-  * The rule of 5 is implemented for the *Game* and *Snake* classes
+  * The "Rule of 5" is implemented for the *Game* and *Snake* classes.
 
 * **The project uses move semantics to move data, instead of copying it, where possible.**
   * Move semantics is used where appropriate in the *Game* and *Snake* classes to move arrays instead of copying them.
