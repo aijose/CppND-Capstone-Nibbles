@@ -1,0 +1,6 @@
+2
+1
+up down left right
+w s a f
+k j h l
+g b v n
